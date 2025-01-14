@@ -1,0 +1,38 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    background-color: #e9ecef; /* Açýk gri navbar */
+}
+
+.navbar-collapse .navbar-nav .nav-link {
+    color: #333;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.navbar-collapse .navbar-nav .nav-link:hover {
+    color: #cdc5bf;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+
+.navbar-collapse .navbar-nav .nav-item.active .nav-link {
+    color: #333;
+}

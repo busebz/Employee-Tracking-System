@@ -1,0 +1,40 @@
+﻿@model StaffTrack.Models.ViewModels.AddEmployeeViewModel
+@{
+}
+
+<h1 class="mt-4 mb-2">Add Employee</h1>
+<form method="post" asp-action="Add" asp-controller="Employees">
+    <div asp-validation-summary="All" class="text-danger"></div> <!-- Validation messages container -->
+
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name">
+        <span asp-validation-for="Name" class="text-danger"></span> <!-- Individual validation message -->
+    </div>
+
+    <div class="mb-3">
+        <label for="Email" class="form-label">Email Address</label>
+        <input type="email" class="form-control" asp-for="Email">
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="Salary" class="form-label">Salary</label>
+        <input type="number" class="form-control" asp-for="Salary">
+        <span asp-validation-for="Salary" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="DateOfBirth" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" asp-for="DateOfBirth">
+        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="Department" class="form-label">Department</label>
+        <input type="text" class="form-control" asp-for="Department">
+        <span asp-validation-for="Department" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

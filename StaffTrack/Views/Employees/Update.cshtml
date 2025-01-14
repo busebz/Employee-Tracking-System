@@ -1,0 +1,33 @@
+﻿@model StaffTrack.Models.ViewModels.UpdateEmployeeViewModel
+@{
+}
+
+<h1 class="mt-4 mb-4">Update Employee</h1>
+<form method="post" action="Update" class="mt-6">
+    <div class="mb-3" style="display: none;">
+        <label for="" class="form-label">Id</label>
+        <input type="hidden" asp-for="Id">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Email Address</label>
+        <input type="email" class="form-control" asp-for="Email">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Salary</label>
+        <input type="number" class="form-control" asp-for="Salary">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" asp-for="DateOfBirth">
+    </div>
+    <div class="mb-3">
+        <label for="" class="form-label">Department</label>
+        <input type="text" class="form-control" asp-for="Department">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

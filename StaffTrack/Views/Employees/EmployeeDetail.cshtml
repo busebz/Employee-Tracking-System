@@ -1,0 +1,30 @@
+﻿@model StaffTrack.Models.ViewModels.EmployeeViewModel
+@{
+}
+
+<h1 class="mb-4">Employee Information</h1>
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-2"><strong>Name:</strong></div>
+        <div class="col-8">@Model.Name</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2"><strong>Email:</strong></div>
+        <div class="col-8">@Model.Email</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2"><strong>Salary:</strong></div>
+        <div class="col-8">@Model.Salary</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2"><strong>Date of Birth:</strong></div>
+        <div class="col-8">@Model.DateOfBirth.ToString("dd-MM-yyyy")</div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2"><strong>Department:</strong></div>
+        <div class="col-8">@Model.Department</div>
+    </div>
+    <div class="mt-4">
+        <a href="/Employees/Index" class="btn btn-primary">Back to Employees List</a>
+    </div>
+</div>

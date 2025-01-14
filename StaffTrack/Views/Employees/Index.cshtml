@@ -1,0 +1,43 @@
+﻿@model List<StaffTrack.Models.Entities.Employee>
+@{
+}
+
+<h1>Employees</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Salary</th>
+            <th>Date of Birth</th>
+            <th>Department</th>
+            <th>Detail</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.Name</td>
+                <td>@employee.Email</td>
+                <td>@employee.Salary</td>
+                <td>@employee.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                <td>@employee.Department</td>
+                <td>
+                    <a href="/Employees/EmployeeDetail/@employee.Id" class="btn btn-info">Detail</a>
+                </td>
+                <td>
+                    <a href="/Employees/Update/@employee.Id" class="btn btn-warning">Update</a>
+                </td>
+                <td>
+                    <form asp-action="Delete" asp-controller="Employees" asp-route-id="@employee.Id" method="post">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

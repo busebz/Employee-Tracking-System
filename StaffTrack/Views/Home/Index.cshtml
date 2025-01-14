@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="height: calc(100vh - 60px);">
+
+    <h1 class="display-4 text-center mb-4">Welcome</h1>
+    <p class="lead text-center mb-4">The Employee Tracking System is a modern software solution designed to help you manage your employees more efficiently.</p>
+    <div class="d-flex justify-content-center">
+        <a asp-controller="Employees" asp-action="Index" class="btn btn-primary btn-lg m-3 shadow-lg hover-shadow">Employees</a>
+        <a asp-controller="Employees" asp-action="Add" class="btn btn-success btn-lg m-3 shadow-lg hover-shadow">Add New Employee</a>
+    </div>
+</div>
