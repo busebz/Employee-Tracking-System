@@ -4,12 +4,14 @@ using StaffTrack.Models.Entities;
 
 namespace StaffTrack.Data
 {
-	public class ApplicationDbContext : DbContext
-	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-			: base(options)
-		{
-		}
-		public DbSet<Employee> Employees { get; set; }
-	}
+    public class ApplicationDbContext : IdentityDbContext
+    {
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<Employee> Employees { get; set; }
+    }
 }

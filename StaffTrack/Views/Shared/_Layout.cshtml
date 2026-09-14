@@ -4,54 +4,572 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - StaffTrack</title>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/StaffTrack.styles.css" asp-append-version="true" />
+
+    <style>
+            :root {
+                --st-primary: #2f6df6;
+                --st-secondary: #7b35f4;
+                --st-text: #10173f;
+                --st-muted: #6f7b9d;
+                --st-border: #e7eaf4;
+                --st-soft: #f6f8ff;
+            }
+
+            html,
+            body {
+                width: 100%;
+                min-height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                background: #ffffff;
+                color: var(--st-text);
+                font-family: "Segoe UI", Arial, sans-serif;
+                overflow-x: hidden;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            /* =========================
+                       HEADER
+                    ========================= */
+
+            .st-navbar {
+                width: 100%;
+                height: 68px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.97);
+                backdrop-filter: blur(12px);
+                border-bottom: 1px solid #edf0f7;
+            }
+
+            .st-navbar-inner {
+                width: 100%;
+                max-width: 1400px;
+                height: 100%;
+                margin: 0 auto;
+                padding: 0 32px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 24px;
+            }
+
+            .st-left {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                gap: 42px;
+            }
+
+            /* LOGO */
+
+            .st-logo {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                text-decoration: none;
+                font-size: 26px;
+                font-weight: 800;
+                letter-spacing: -1.2px;
+                color: #11183d;
+            }
+
+                .st-logo:hover {
+                    color: #11183d;
+                }
+
+            .st-logo-mark {
+                width: 32px;
+                height: 32px;
+                position: relative;
+                flex-shrink: 0;
+            }
+
+                .st-logo-mark span {
+                    position: absolute;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    opacity: .9;
+                }
+
+                    .st-logo-mark span:nth-child(1) {
+                        left: 0;
+                        top: 6px;
+                        background: #59a7ff;
+                    }
+
+                    .st-logo-mark span:nth-child(2) {
+                        right: 0;
+                        top: 6px;
+                        background: #7d42f6;
+                    }
+
+                    .st-logo-mark span:nth-child(3) {
+                        left: 6px;
+                        top: 0;
+                        background: #8c65ff;
+                    }
+
+                    .st-logo-mark span:nth-child(4) {
+                        left: 6px;
+                        bottom: 0;
+                        background: #4d87ff;
+                    }
+
+            .st-logo-gradient {
+                background: linear-gradient( 90deg, #1e61ff, #8732f5 );
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+            /* NAVIGATION */
+
+            .st-nav-links {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                gap: 30px;
+            }
+
+            .st-nav-link {
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                color: #4d5878;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                transition: color .2s ease;
+            }
+
+                .st-nav-link:hover {
+                    color: #1b55f5;
+                }
+
+                .st-nav-link.active {
+                    color: #0f54ff;
+                    font-weight: 600;
+                }
+
+                    .st-nav-link.active::after {
+                        content: "";
+                        position: absolute;
+                        left: 50%;
+                        bottom: 9px;
+                        width: 5px;
+                        height: 5px;
+                        border-radius: 50%;
+                        transform: translateX(-50%);
+                        background: #2f65ff;
+                    }
+
+            /* RIGHT AREA */
+
+            .st-right {
+                display: flex;
+                align-items: center;
+                gap: 24px;
+            }
+
+            /* SEARCH */
+
+            .st-search {
+                width: 220px;
+                height: 38px;
+                padding: 0 15px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border-radius: 22px;
+                color: #8994b7;
+                background: linear-gradient( 90deg, #f4f6fc, #eef0fb );
+            }
+
+                .st-search svg {
+                    flex-shrink: 0;
+                }
+
+                .st-search input {
+                    width: 100%;
+                    border: 0;
+                    outline: 0;
+                    padding: 0;
+                    background: transparent;
+                    color: #4f597b;
+                    font-size: 13px;
+                }
+
+                    .st-search input::placeholder {
+                        color: #9aa4c0;
+                    }
+
+            /* AUTH */
+
+            .st-auth {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .st-auth-user {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .st-auth a,
+            .st-auth button,
+            .st-auth-link {
+                border: 0;
+                padding: 0;
+                background: none;
+                color: #11183e;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: color .2s ease;
+            }
+
+                .st-auth a:hover,
+                .st-auth button:hover,
+                .st-auth-link:hover {
+                    color: #315df5;
+                }
+
+            .st-user-greeting {
+                color: #11183e;
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            /* =========================
+                       MAIN
+                    ========================= */
+
+            .st-main {
+                width: 100%;
+                flex: 1 0 auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* =========================
+                       FOOTER
+                    ========================= */
+
+            .st-footer {
+                width: 100%;
+                flex-shrink: 0;
+                padding: 18px 0;
+                background: #ffffff;
+                border-top: 1px solid #edf0f7;
+            }
+
+            .st-footer-inner {
+                width: 100%;
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 0 32px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 20px;
+                color: #8390b1;
+                font-size: 12px;
+            }
+
+            .st-footer-brand {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+                .st-footer-brand strong {
+                    color: #161d3f;
+                    font-weight: 700;
+                }
+
+            .st-footer-tagline {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+            }
+
+            .st-footer-line {
+                width: 45px;
+                height: 1px;
+                margin-left: 8px;
+                background: #9aa6cc;
+            }
+
+            /* =========================
+                       RESPONSIVE
+                    ========================= */
+
+            @@media (max-width: 1100px) {
+
+                .st-navbar-inner {
+                    padding: 0 24px;
+                }
+
+                .st-left {
+                    gap: 28px;
+                }
+
+                .st-nav-links {
+                    gap: 20px;
+                }
+
+                .st-search {
+                    width: 190px;
+                }
+            }
+
+            @@media (max-width: 900px) {
+
+                .st-navbar {
+                    height: 64px;
+                }
+
+                .st-search {
+                    display: none;
+                }
+
+                .st-nav-links {
+                    display: none;
+                }
+
+                .st-navbar-inner {
+                    padding: 0 20px;
+                }
+
+                .st-logo {
+                    font-size: 24px;
+                }
+
+                .st-logo-mark {
+                    width: 30px;
+                    height: 30px;
+                }
+
+                    .st-logo-mark span {
+                        width: 18px;
+                        height: 18px;
+                    }
+
+                        .st-logo-mark span:nth-child(1) {
+                            top: 6px;
+                        }
+
+                        .st-logo-mark span:nth-child(2) {
+                            top: 6px;
+                        }
+
+                        .st-logo-mark span:nth-child(3) {
+                            left: 6px;
+                        }
+
+                        .st-logo-mark span:nth-child(4) {
+                            left: 6px;
+                        }
+            }
+
+            @@media (max-width: 600px) {
+
+                .st-navbar-inner {
+                    padding: 0 16px;
+                }
+
+                .st-logo {
+                    font-size: 21px;
+                }
+
+                .st-auth {
+                    gap: 12px;
+                }
+
+                    .st-auth a,
+                    .st-auth button,
+                    .st-auth-link {
+                        font-size: 13px;
+                    }
+
+                .st-footer-inner {
+                    padding: 0 18px;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 8px;
+                }
+
+                .st-footer-tagline {
+                    flex-wrap: wrap;
+                }
+            }
+    </style>
 </head>
+
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">StaffTrack</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Index">Employees</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Employees" asp-action="Add">Add Employee</a>
-                        </li>
-                    </ul>
+
+    <header class="st-navbar">
+
+        <div class="st-navbar-inner">
+
+            <div class="st-left">
+
+                <a class="st-logo"
+                       asp-area=""
+                       asp-controller="Home"
+                       asp-action="Index">
+
+                    <span class="st-logo-mark">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+
+                    <span>
+                        Staff<span class="st-logo-gradient">Track</span>
+                    </span>
+
+                </a>
+
+                <nav class="st-nav-links">
+
+                    <a class="st-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="Index">
+                        Home
+                    </a>
+
+                    <a class="st-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employees" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                           asp-area=""
+                           asp-controller="Employees"
+                           asp-action="Index">
+                        Employees
+                    </a>
+
+                    <a class="st-nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employees" && ViewContext.RouteData.Values["action"]?.ToString() == "Add" ? "active" : "")"
+                           asp-area=""
+                           asp-controller="Employees"
+                           asp-action="Add">
+                        Add Employee
+                    </a>
+
+                </nav>
+
+            </div>
+
+            <div class="st-right">
+
+                <div class="st-search">
+
+                    <svg width="17"
+                         height="17"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2">
+
+                        <circle cx="11"
+                                cy="11"
+                                r="8">
+                        </circle>
+
+                        <path d="m21 21-4.35-4.35"></path>
+
+                    </svg>
+
+                    <input type="text"
+                           placeholder="Search..." />
+
+                </div>
+
+                <div class="st-auth">
                     <partial name="_LoginPartial" />
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - StaffTrack 
+            </div>
+
         </div>
+
+    </header>
+
+    <main class="st-main"
+          role="main">
+
+        @RenderBody()
+
+    </main>
+
+    <footer class="st-footer">
+
+        <div class="st-footer-inner">
+
+            <div class="st-footer-brand">
+
+                <strong>
+                    StaffTrack
+                </strong>
+
+                <span>
+                    v1.0.0
+                </span>
+
+            </div>
+
+            <div class="st-footer-tagline">
+
+                <span>People</span>
+
+                <span>·</span>
+
+                <span>Organization</span>
+
+                <span>·</span>
+
+                <span>Progress</span>
+
+                <span class="st-footer-line"></span>
+
+            </div>
+
+        </div>
+
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <!-- Client-side validation için gerekli scriptler -->
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true">
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

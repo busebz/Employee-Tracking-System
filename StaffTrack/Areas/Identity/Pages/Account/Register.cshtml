@@ -1,0 +1,845 @@
+﻿@page
+@model StaffTrack.Areas.Identity.Pages.Account.RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<style>
+    .st-footer {
+        display: none !important;
+    }
+
+    .st-main {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+    }
+
+    body {
+        overflow: hidden;
+        background: #f8faff;
+    }
+
+    .register-page {
+        width: 100%;
+        height: calc(100dvh - 68px);
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 47% 53%;
+        position: relative;
+        overflow: hidden;
+        color: #09133e;
+        background: linear-gradient(90deg, #ffffff 0%, #ffffff 42%, #f8faff 56%, #f7f9ff 100%);
+    }
+
+    .register-left {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .register-photo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 42% center;
+        z-index: 1;
+    }
+
+    .register-left-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: linear-gradient( 180deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.97) 15%, rgba(255,255,255,.83) 29%, rgba(255,255,255,.27) 51%, rgba(255,255,255,.03) 73%, rgba(255,255,255,0) 100% );
+    }
+
+    .register-left-right-fade {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 32%;
+        z-index: 3;
+        pointer-events: none;
+        background: linear-gradient( 90deg, rgba(248,250,255,0) 0%, rgba(248,250,255,.18) 25%, rgba(248,250,255,.70) 70%, #f8faff 100% );
+    }
+
+    .register-left-content {
+        position: relative;
+        z-index: 5;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(35px, 6vh, 72px) 30px 30px 9%;
+    }
+
+    .register-kicker {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 23px;
+        color: #6b7eae;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+    .register-kicker-mark {
+        width: 33px;
+        height: 2px;
+        border-radius: 20px;
+        background: linear-gradient(90deg, #227dff, #764cff);
+    }
+
+    .register-hero-title {
+        margin: 0;
+        max-width: 550px;
+        color: #07113d;
+        font-size: clamp(52px, 4.8vw, 75px);
+        line-height: .91;
+        font-weight: 800;
+        letter-spacing: -3.7px;
+    }
+
+    .register-gradient {
+        display: inline-block;
+        background: linear-gradient(96deg, #1684ff 0%, #3567ff 43%, #7640f7 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .register-description {
+        max-width: 400px;
+        margin: 22px 0 0;
+        color: #667bab;
+        font-size: 16px;
+        line-height: 1.45;
+    }
+
+    .register-mini-card {
+        width: fit-content;
+        margin-top: auto;
+        padding: 11px 15px;
+        border: 1px solid rgba(255,255,255,.76);
+        border-radius: 15px 15px 15px 4px;
+        background: rgba(255,255,255,.66);
+        box-shadow: 0 15px 38px rgba(49,69,128,.08);
+        backdrop-filter: blur(14px);
+    }
+
+    .register-mini-title {
+        margin-bottom: 2px;
+        color: #13204c;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .register-mini-text {
+        color: #7383aa;
+        font-size: 10px;
+    }
+
+    .register-right {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: clamp(18px, 3vh, 34px) clamp(34px, 4.5vw, 72px);
+        background: radial-gradient(circle at 86% 18%, rgba(130,96,255,.12), transparent 25%), radial-gradient(circle at 14% 82%, rgba(62,132,255,.09), transparent 28%), #f8faff;
+    }
+
+    .decor-circle-one {
+        position: absolute;
+        width: 310px;
+        height: 310px;
+        right: -185px;
+        top: -170px;
+        border-radius: 50%;
+        border: 48px solid rgba(110,86,255,.055);
+    }
+
+    .decor-circle-two {
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -150px;
+        bottom: -145px;
+        border-radius: 50%;
+        border: 36px solid rgba(53,124,255,.055);
+    }
+
+    .decor-dots {
+        position: absolute;
+        right: 9%;
+        bottom: 13%;
+        width: 70px;
+        height: 70px;
+        opacity: .32;
+        background-image: radial-gradient(#7587dd 1.4px, transparent 1.4px);
+        background-size: 12px 12px;
+    }
+
+    .register-shape {
+        position: relative;
+        z-index: 5;
+        width: min(560px, 100%);
+        padding: 7px;
+        border-radius: 70px 38px 78px 38px;
+        background: linear-gradient( 135deg, rgba(50,120,255,.52), rgba(119,71,247,.34), rgba(255,255,255,.80) );
+        box-shadow: 0 30px 80px rgba(54,69,128,.13);
+    }
+
+        .register-shape::before {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            top: -28px;
+            left: -25px;
+            z-index: -1;
+            border-radius: 59% 41% 37% 63% / 46% 58% 42% 54%;
+            background: linear-gradient(145deg, rgba(73,134,255,.25), rgba(124,75,255,.21));
+            transform: rotate(-16deg);
+        }
+
+        .register-shape::after {
+            content: "";
+            position: absolute;
+            width: 92px;
+            height: 92px;
+            right: -26px;
+            bottom: -19px;
+            z-index: -1;
+            border-radius: 35% 65% 58% 42% / 55% 37% 63% 45%;
+            background: linear-gradient(145deg, rgba(63,136,255,.18), rgba(135,81,255,.18));
+            transform: rotate(18deg);
+        }
+
+    .register-panel {
+        position: relative;
+        padding: clamp(26px, 3.6vh, 39px) clamp(32px, 4vw, 52px);
+        border-radius: 64px 32px 72px 32px;
+        background: rgba(255,255,255,.96);
+        backdrop-filter: blur(18px);
+    }
+
+    .register-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 23px;
+    }
+
+    .register-title {
+        margin: 0;
+        color: #08123e;
+        font-size: 38px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -1.8px;
+    }
+
+    .register-subtitle {
+        margin: 9px 0 0;
+        color: #7484ac;
+        font-size: 14px;
+    }
+
+    .register-top-icon {
+        width: 52px;
+        height: 52px;
+        flex: 0 0 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px 18px 6px 18px;
+        color: #ffffff;
+        background: linear-gradient(145deg, #2c7bff, #6f41f7);
+        box-shadow: 0 12px 27px rgba(67,83,255,.24);
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .register-validation.validation-summary-errors {
+        margin: -5px 0 13px;
+        padding: 9px 13px;
+        border: 1px solid #ffd4df;
+        border-radius: 12px;
+        color: #c72e49;
+        background: #fff6f8;
+        font-size: 11px;
+    }
+
+    .register-validation ul {
+        margin: 0;
+        padding-left: 17px;
+    }
+
+    .register-field {
+        margin-bottom: 14px;
+    }
+
+    .register-label {
+        display: block;
+        margin: 0 0 7px 3px;
+        color: #28365e;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .register-input-wrap {
+        height: 52px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border: 1px solid #e0e7f3;
+        border-radius: 18px 18px 7px 18px;
+        background: linear-gradient(90deg, #f7f9fd, #f3f6fc);
+        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+        .register-input-wrap:focus-within {
+            border-color: #8da6ff;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(64,99,255,.07);
+        }
+
+    .register-input-icon {
+        width: 54px;
+        height: 100%;
+        flex: 0 0 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #647ab3;
+    }
+
+    .register-input {
+        width: 100%;
+        height: 100%;
+        padding: 0 12px 0 0;
+        border: 0;
+        outline: 0;
+        color: #17234c;
+        background: transparent;
+        font-size: 14px;
+    }
+
+        .register-input::placeholder {
+            color: #9ba7c5;
+        }
+
+    .password-toggle {
+        width: 51px;
+        height: 100%;
+        flex: 0 0 51px;
+        padding: 0;
+        border: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #7484ad;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .register-error {
+        display: block;
+        margin: 4px 0 0 5px;
+        color: #d33551;
+        font-size: 10px;
+    }
+
+        .register-error:empty {
+            display: none;
+        }
+
+    .register-submit {
+        width: 100%;
+        height: 53px;
+        margin-top: 7px;
+        border: 0;
+        border-radius: 18px 18px 7px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        color: #ffffff;
+        background: linear-gradient(100deg, #247cff 0%, #4a61ff 51%, #7040f6 100%);
+        box-shadow: 0 14px 28px rgba(69,81,255,.25);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .register-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(69,81,255,.31);
+        }
+
+    .login-link-area {
+        margin-top: 17px;
+        padding-top: 16px;
+        border-top: 1px solid #e4e9f3;
+        color: #7a89aa;
+        text-align: center;
+        font-size: 12px;
+    }
+
+        .login-link-area a {
+            margin-left: 4px;
+            color: #4a3cff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+    @@media (max-height: 760px) and (min-width: 901px) {
+        .register-left-content {
+            padding-top: 28px;
+            padding-bottom: 18px;
+        }
+
+        .register-kicker {
+            margin-bottom: 12px;
+            font-size: 9px;
+        }
+
+        .register-hero-title {
+            font-size: 47px;
+            letter-spacing: -2.5px;
+        }
+
+        .register-description {
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .register-mini-card {
+            padding: 8px 12px;
+        }
+
+        .register-right {
+            padding: 12px 40px;
+        }
+
+        .register-shape {
+            width: min(500px, 100%);
+        }
+
+        .register-panel {
+            padding: 20px 36px;
+        }
+
+        .register-top {
+            margin-bottom: 14px;
+        }
+
+        .register-title {
+            font-size: 30px;
+        }
+
+        .register-subtitle {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .register-top-icon {
+            width: 42px;
+            height: 42px;
+            flex-basis: 42px;
+        }
+
+        .register-field {
+            margin-bottom: 9px;
+        }
+
+        .register-label {
+            margin-bottom: 4px;
+            font-size: 10px;
+        }
+
+        .register-input-wrap {
+            height: 43px;
+        }
+
+        .register-input {
+            font-size: 12px;
+        }
+
+        .register-submit {
+            height: 45px;
+            margin-top: 5px;
+        }
+
+        .login-link-area {
+            margin-top: 11px;
+            padding-top: 10px;
+        }
+    }
+
+    @@media (max-width: 900px) {
+        body {
+            overflow: auto;
+        }
+
+        .register-page {
+            height: auto;
+            min-height: calc(100dvh - 68px);
+            grid-template-columns: 1fr;
+            overflow: visible;
+        }
+
+        .register-left {
+            height: 520px;
+        }
+
+        .register-right {
+            min-height: 680px;
+            padding: 42px 25px;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .register-left {
+            height: 450px;
+        }
+
+        .register-left-content {
+            padding: 28px 20px 20px;
+        }
+
+        .register-kicker {
+            margin-bottom: 15px;
+            font-size: 8px;
+            letter-spacing: 2.6px;
+        }
+
+        .register-hero-title {
+            font-size: 43px;
+            letter-spacing: -2.2px;
+        }
+
+        .register-description {
+            font-size: 13px;
+        }
+
+        .register-mini-card {
+            display: none;
+        }
+
+        .register-right {
+            min-height: auto;
+            padding: 34px 16px 42px;
+        }
+
+        .register-shape {
+            padding: 5px;
+            border-radius: 50px 28px 55px 28px;
+        }
+
+        .register-panel {
+            padding: 25px 21px;
+            border-radius: 46px 24px 51px 24px;
+        }
+
+        .register-title {
+            font-size: 32px;
+        }
+    }
+</style>
+
+<section class="register-page">
+    <div class="register-left">
+        <img src="~/images/background.png"
+             asp-append-version="true"
+             alt=""
+             class="register-photo" />
+
+        <div class="register-left-overlay"></div>
+        <div class="register-left-right-fade"></div>
+
+        <div class="register-left-content">
+            <div>
+                <div class="register-kicker">
+                    <span class="register-kicker-mark"></span>
+                    <span>People · Organization · Progress</span>
+                </div>
+
+                <h1 class="register-hero-title">
+                    Build your<br />
+                    <span class="register-gradient">better team.</span>
+                </h1>
+
+                <p class="register-description">
+                    Create your StaffTrack account and keep your
+                    employee management simple, clear and organized.
+                </p>
+            </div>
+
+            <div class="register-mini-card">
+                <div class="register-mini-title">One workspace</div>
+                <div class="register-mini-text">
+                    Your people and organization, all in one place.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="register-right">
+        <div class="decor-circle-one"></div>
+        <div class="decor-circle-two"></div>
+        <div class="decor-dots"></div>
+
+        <div class="register-shape">
+            <div class="register-panel">
+                <div class="register-top">
+                    <div>
+                        <h1 class="register-title">Create account</h1>
+
+                        <p class="register-subtitle">
+                            Start your StaffTrack workspace.
+                        </p>
+                    </div>
+
+                    <div class="register-top-icon">
+                        <svg width="25"
+                             height="25"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+                            <path d="M15 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8" cy="7" r="4"></circle>
+                            <path d="M19 8v6"></path>
+                            <path d="M16 11h6"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <form method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="All"
+                         class="register-validation">
+                    </div>
+
+                    <div class="register-field">
+                        <label asp-for="Input.Email"
+                               class="register-label">
+                            Email address
+                        </label>
+
+                        <div class="register-input-wrap">
+                            <div class="register-input-icon">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                    <path d="m3 7 9 6 9-6"></path>
+                                </svg>
+                            </div>
+
+                            <input asp-for="Input.Email"
+                                   class="register-input"
+                                   autocomplete="username"
+                                   placeholder="name@company.com" />
+                        </div>
+
+                        <span asp-validation-for="Input.Email"
+                              class="register-error">
+                        </span>
+                    </div>
+
+                    <div class="register-field">
+                        <label asp-for="Input.Password"
+                               class="register-label">
+                            Password
+                        </label>
+
+                        <div class="register-input-wrap">
+                            <div class="register-input-icon">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <rect x="5" y="10" width="14" height="11" rx="2"></rect>
+                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                                </svg>
+                            </div>
+
+                            <input asp-for="Input.Password"
+                                   id="registerPassword"
+                                   type="password"
+                                   class="register-input"
+                                   autocomplete="new-password"
+                                   placeholder="Create a password" />
+
+                            <button type="button"
+                                    id="passwordToggle"
+                                    class="password-toggle"
+                                    aria-label="Show password">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <path d="M3 3l18 18"></path>
+                                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                    <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c5.5 0 9 5 9 5a15 15 0 0 1-2.2 2.8"></path>
+                                    <path d="M6.6 6.6C4.3 8 3 10 3 10s3.5 5 9 5a9.8 9.8 0 0 0 4-.8"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <span asp-validation-for="Input.Password"
+                              class="register-error">
+                        </span>
+                    </div>
+
+                    <div class="register-field">
+                        <label asp-for="Input.ConfirmPassword"
+                               class="register-label">
+                            Confirm password
+                        </label>
+
+                        <div class="register-input-wrap">
+                            <div class="register-input-icon">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <path d="M20 6L9 17l-5-5"></path>
+                                    <path d="M5 4h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
+                                </svg>
+                            </div>
+
+                            <input asp-for="Input.ConfirmPassword"
+                                   id="registerConfirmPassword"
+                                   type="password"
+                                   class="register-input"
+                                   autocomplete="new-password"
+                                   placeholder="Repeat your password" />
+
+                            <button type="button"
+                                    id="confirmPasswordToggle"
+                                    class="password-toggle"
+                                    aria-label="Show password">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <path d="M3 3l18 18"></path>
+                                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                    <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c5.5 0 9 5 9 5a15 15 0 0 1-2.2 2.8"></path>
+                                    <path d="M6.6 6.6C4.3 8 3 10 3 10s3.5 5 9 5a9.8 9.8 0 0 0 4-.8"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <span asp-validation-for="Input.ConfirmPassword"
+                              class="register-error">
+                        </span>
+                    </div>
+
+                    <button type="submit"
+                            class="register-submit">
+                        <span>Create account</span>
+
+                        <svg width="19"
+                             height="19"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2">
+                            <path d="M5 12h14"></path>
+                            <path d="m14 5 7 7-7 7"></path>
+                        </svg>
+                    </button>
+
+                    <div class="login-link-area">
+                        Already have an account?
+
+                        <a asp-page="./Login">
+                            Sign in
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const password =
+                document.getElementById("registerPassword");
+
+            const passwordToggle =
+                document.getElementById("passwordToggle");
+
+            const confirmPassword =
+                document.getElementById("registerConfirmPassword");
+
+            const confirmPasswordToggle =
+                document.getElementById("confirmPasswordToggle");
+
+            if (password && passwordToggle) {
+                passwordToggle.addEventListener("click", function () {
+                    const hidden = password.type === "password";
+
+                    password.type = hidden ? "text" : "password";
+
+                    passwordToggle.setAttribute(
+                        "aria-label",
+                        hidden ? "Hide password" : "Show password"
+                    );
+                });
+            }
+
+            if (confirmPassword && confirmPasswordToggle) {
+                confirmPasswordToggle.addEventListener("click", function () {
+                    const hidden =
+                        confirmPassword.type === "password";
+
+                    confirmPassword.type =
+                        hidden ? "text" : "password";
+
+                    confirmPasswordToggle.setAttribute(
+                        "aria-label",
+                        hidden ? "Hide password" : "Show password"
+                    );
+                });
+            }
+        });
+    </script>
+}

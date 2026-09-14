@@ -1,0 +1,824 @@
+﻿@page
+@model StaffTrack.Areas.Identity.Pages.Account.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    .st-footer {
+        display: none !important;
+    }
+
+    .st-main {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+    }
+
+    body {
+        overflow: hidden;
+        background: #f8faff;
+    }
+
+    .login-page {
+        width: 100%;
+        height: calc(100dvh - 68px);
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 49% 51%;
+        position: relative;
+        overflow: hidden;
+        color: #09133e;
+        background: linear-gradient(90deg, #ffffff 0%, #ffffff 43%, #f8faff 56%, #f7f9ff 100%);
+    }
+
+    .login-left {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .login-photo {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 42% center;
+        z-index: 1;
+    }
+
+    .login-left-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        background: linear-gradient(180deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.97) 16%, rgba(255,255,255,.83) 30%, rgba(255,255,255,.28) 52%, rgba(255,255,255,.03) 72%, rgba(255,255,255,0) 100%);
+    }
+
+    .login-left-right-fade {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 31%;
+        z-index: 3;
+        pointer-events: none;
+        background: linear-gradient(90deg, rgba(248,250,255,0) 0%, rgba(248,250,255,.18) 25%, rgba(248,250,255,.70) 70%, #f8faff 100%);
+    }
+
+    .login-left-content {
+        position: relative;
+        z-index: 5;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: clamp(35px, 6vh, 72px) 30px 30px 9%;
+    }
+
+    .login-kicker {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 23px;
+        color: #6b7eae;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+    .login-kicker-mark {
+        width: 33px;
+        height: 2px;
+        border-radius: 20px;
+        background: linear-gradient(90deg, #227dff, #764cff);
+    }
+
+    .login-hero-title {
+        margin: 0;
+        max-width: 550px;
+        color: #07113d;
+        font-size: clamp(53px, 4.9vw, 76px);
+        line-height: .91;
+        font-weight: 800;
+        letter-spacing: -3.7px;
+    }
+
+    .login-gradient {
+        display: inline-block;
+        background: linear-gradient(96deg, #1684ff 0%, #3567ff 43%, #7640f7 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .login-description {
+        max-width: 400px;
+        margin: 22px 0 0;
+        color: #667bab;
+        font-size: 16px;
+        line-height: 1.45;
+    }
+
+    .login-mini-card {
+        width: fit-content;
+        margin-top: auto;
+        padding: 11px 15px;
+        border: 1px solid rgba(255,255,255,.76);
+        border-radius: 15px 15px 15px 4px;
+        background: rgba(255,255,255,.66);
+        box-shadow: 0 15px 38px rgba(49,69,128,.08);
+        backdrop-filter: blur(14px);
+    }
+
+    .login-mini-title {
+        margin-bottom: 2px;
+        color: #13204c;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .login-mini-text {
+        color: #7383aa;
+        font-size: 10px;
+    }
+
+    .login-right {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: clamp(22px, 4vh, 48px) clamp(35px, 5vw, 82px);
+        background: radial-gradient(circle at 86% 18%, rgba(130,96,255,.12), transparent 25%), radial-gradient(circle at 14% 82%, rgba(62,132,255,.09), transparent 28%), #f8faff;
+    }
+
+    .decor-circle-one {
+        position: absolute;
+        width: 310px;
+        height: 310px;
+        right: -185px;
+        top: -170px;
+        border-radius: 50%;
+        border: 48px solid rgba(110,86,255,.055);
+    }
+
+    .decor-circle-two {
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        left: -150px;
+        bottom: -145px;
+        border-radius: 50%;
+        border: 36px solid rgba(53,124,255,.055);
+    }
+
+    .decor-dots {
+        position: absolute;
+        right: 10%;
+        bottom: 14%;
+        width: 70px;
+        height: 70px;
+        opacity: .32;
+        background-image: radial-gradient(#7587dd 1.4px, transparent 1.4px);
+        background-size: 12px 12px;
+    }
+
+    .login-shape {
+        position: relative;
+        z-index: 5;
+        width: min(520px, 100%);
+        padding: 7px;
+        border-radius: 42px 85px 42px 85px;
+        background: linear-gradient(135deg, rgba(50,120,255,.52), rgba(119,71,247,.34), rgba(255,255,255,.80));
+        box-shadow: 0 30px 80px rgba(54,69,128,.13);
+    }
+
+        .login-shape::before {
+            content: "";
+            position: absolute;
+            width: 110px;
+            height: 110px;
+            top: -31px;
+            right: -24px;
+            z-index: -1;
+            border-radius: 35% 65% 60% 40% / 45% 35% 65% 55%;
+            background: linear-gradient(145deg, rgba(73,134,255,.28), rgba(124,75,255,.23));
+            transform: rotate(17deg);
+        }
+
+        .login-shape::after {
+            content: "";
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            left: -28px;
+            bottom: -19px;
+            z-index: -1;
+            border-radius: 63% 37% 43% 57% / 40% 55% 45% 60%;
+            background: linear-gradient(145deg, rgba(63,136,255,.18), rgba(135,81,255,.18));
+            transform: rotate(-16deg);
+        }
+
+    .login-panel {
+        position: relative;
+        padding: clamp(30px, 4.5vh, 47px) clamp(32px, 4vw, 52px);
+        border-radius: 36px 79px 36px 79px;
+        background: rgba(255,255,255,.96);
+        backdrop-filter: blur(18px);
+    }
+
+    .login-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 28px;
+    }
+
+    .login-title {
+        margin: 0;
+        color: #08123e;
+        font-size: 40px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -1.9px;
+    }
+
+    .login-subtitle {
+        margin: 10px 0 0;
+        color: #7484ac;
+        font-size: 15px;
+    }
+
+    .login-top-icon {
+        width: 52px;
+        height: 52px;
+        flex: 0 0 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 17px 17px 17px 6px;
+        color: #ffffff;
+        background: linear-gradient(145deg, #2c7bff, #6f41f7);
+        box-shadow: 0 12px 27px rgba(67,83,255,.24);
+    }
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .login-validation.validation-summary-errors {
+        margin: -7px 0 15px;
+        padding: 9px 13px;
+        border: 1px solid #ffd4df;
+        border-radius: 12px;
+        color: #c72e49;
+        background: #fff6f8;
+        font-size: 11px;
+    }
+
+    .login-validation ul {
+        margin: 0;
+        padding-left: 17px;
+    }
+
+    .login-field {
+        margin-bottom: 17px;
+    }
+
+    .login-label {
+        display: block;
+        margin: 0 0 8px 3px;
+        color: #28365e;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .login-input-wrap {
+        height: 56px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border: 1px solid #e0e7f3;
+        border-radius: 18px 18px 18px 7px;
+        background: linear-gradient(90deg, #f7f9fd, #f3f6fc);
+        transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+        .login-input-wrap:focus-within {
+            border-color: #8da6ff;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(64,99,255,.07);
+        }
+
+    .login-input-icon {
+        width: 55px;
+        height: 100%;
+        flex: 0 0 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #647ab3;
+    }
+
+    .login-input {
+        width: 100%;
+        height: 100%;
+        padding: 0 12px 0 0;
+        border: 0;
+        outline: 0;
+        color: #17234c;
+        background: transparent;
+        font-size: 14px;
+    }
+
+        .login-input::placeholder {
+            color: #9ba7c5;
+        }
+
+    .password-toggle {
+        width: 51px;
+        height: 100%;
+        flex: 0 0 51px;
+        padding: 0;
+        border: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #7484ad;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .login-error {
+        display: block;
+        margin: 5px 0 0 5px;
+        color: #d33551;
+        font-size: 11px;
+    }
+
+        .login-error:empty {
+            display: none;
+        }
+
+    .login-options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 3px;
+    }
+
+    .remember-label {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0;
+        color: #334168;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+        .remember-label input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: #5c47ff;
+        }
+
+    .forgot-link {
+        color: #4c3bff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+    .login-submit {
+        width: 100%;
+        height: 55px;
+        margin-top: 24px;
+        border: 0;
+        border-radius: 18px 18px 18px 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        color: #ffffff;
+        background: linear-gradient(100deg, #247cff 0%, #4a61ff 51%, #7040f6 100%);
+        box-shadow: 0 14px 28px rgba(69,81,255,.25);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .login-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 18px 34px rgba(69,81,255,.31);
+        }
+
+    .login-register {
+        margin-top: 21px;
+        padding-top: 19px;
+        border-top: 1px solid #e4e9f3;
+        color: #7a89aa;
+        text-align: center;
+        font-size: 13px;
+    }
+
+        .login-register a {
+            margin-left: 4px;
+            color: #4a3cff;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+    @@media (max-height: 760px) and (min-width: 901px) {
+        .login-left-content {
+            padding-top: 29px;
+            padding-bottom: 18px;
+        }
+
+        .login-kicker {
+            margin-bottom: 13px;
+            font-size: 9px;
+        }
+
+        .login-hero-title {
+            font-size: 48px;
+            letter-spacing: -2.6px;
+        }
+
+        .login-description {
+            margin-top: 13px;
+            font-size: 13px;
+        }
+
+        .login-mini-card {
+            padding: 8px 12px;
+        }
+
+        .login-right {
+            padding: 15px 40px;
+        }
+
+        .login-shape {
+            width: min(470px, 100%);
+        }
+
+        .login-panel {
+            padding: 23px 38px;
+        }
+
+        .login-top {
+            margin-bottom: 17px;
+        }
+
+        .login-title {
+            font-size: 32px;
+        }
+
+        .login-subtitle {
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .login-top-icon {
+            width: 44px;
+            height: 44px;
+            flex-basis: 44px;
+        }
+
+        .login-field {
+            margin-bottom: 11px;
+        }
+
+        .login-label {
+            margin-bottom: 5px;
+            font-size: 11px;
+        }
+
+        .login-input-wrap {
+            height: 45px;
+        }
+
+        .login-input {
+            font-size: 13px;
+        }
+
+        .login-submit {
+            height: 46px;
+            margin-top: 15px;
+        }
+
+        .login-register {
+            margin-top: 14px;
+            padding-top: 12px;
+        }
+    }
+
+    @@media (max-width: 900px) {
+        body {
+            overflow: auto;
+        }
+
+        .login-page {
+            height: auto;
+            min-height: calc(100dvh - 68px);
+            grid-template-columns: 1fr;
+            overflow: visible;
+        }
+
+        .login-left {
+            height: 530px;
+        }
+
+        .login-right {
+            min-height: 620px;
+            padding: 42px 25px;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .login-left {
+            height: 460px;
+        }
+
+        .login-left-content {
+            padding: 28px 20px 20px;
+        }
+
+        .login-kicker {
+            margin-bottom: 15px;
+            font-size: 8px;
+            letter-spacing: 2.6px;
+        }
+
+        .login-hero-title {
+            font-size: 44px;
+            letter-spacing: -2.3px;
+        }
+
+        .login-description {
+            font-size: 13px;
+        }
+
+        .login-mini-card {
+            display: none;
+        }
+
+        .login-right {
+            min-height: auto;
+            padding: 34px 16px 42px;
+        }
+
+        .login-shape {
+            padding: 5px;
+            border-radius: 31px 55px 31px 55px;
+        }
+
+        .login-panel {
+            padding: 27px 21px;
+            border-radius: 27px 51px 27px 51px;
+        }
+
+        .login-title {
+            font-size: 33px;
+        }
+
+        .login-options {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 11px;
+        }
+    }
+</style>
+
+<section class="login-page">
+    <div class="login-left">
+        <img src="~/images/background.png"
+             asp-append-version="true"
+             alt=""
+             class="login-photo" />
+
+        <div class="login-left-overlay"></div>
+        <div class="login-left-right-fade"></div>
+
+        <div class="login-left-content">
+            <div>
+                <div class="login-kicker">
+                    <span class="login-kicker-mark"></span>
+                    <span>People · Organization · Progress</span>
+                </div>
+
+                <h1 class="login-hero-title">
+                    Your people.<br />
+                    <span class="login-gradient">One place.</span>
+                </h1>
+
+                <p class="login-description">
+                    Manage employee information and keep your
+                    organization clear, connected and easy to follow.
+                </p>
+            </div>
+
+            <div class="login-mini-card">
+                <div class="login-mini-title">StaffTrack</div>
+                <div class="login-mini-text">Built for organized teams.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-right">
+        <div class="decor-circle-one"></div>
+        <div class="decor-circle-two"></div>
+        <div class="decor-dots"></div>
+
+        <div class="login-shape">
+            <div class="login-panel">
+                <div class="login-top">
+                    <div>
+                        <h1 class="login-title">Welcome back</h1>
+                        <p class="login-subtitle">
+                            Sign in to your StaffTrack workspace.
+                        </p>
+                    </div>
+
+                    <div class="login-top-icon">
+                        <svg width="25"
+                             height="25"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M16 11l2 2 4-4"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <form method="post">
+                    <div asp-validation-summary="All"
+                         class="login-validation">
+                    </div>
+
+                    <div class="login-field">
+                        <label asp-for="Input.Email"
+                               class="login-label">
+                            Email address
+                        </label>
+
+                        <div class="login-input-wrap">
+                            <div class="login-input-icon">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                    <path d="m3 7 9 6 9-6"></path>
+                                </svg>
+                            </div>
+
+                            <input asp-for="Input.Email"
+                                   class="login-input"
+                                   autocomplete="username"
+                                   placeholder="name@company.com" />
+                        </div>
+
+                        <span asp-validation-for="Input.Email"
+                              class="login-error">
+                        </span>
+                    </div>
+
+                    <div class="login-field">
+                        <label asp-for="Input.Password"
+                               class="login-label">
+                            Password
+                        </label>
+
+                        <div class="login-input-wrap">
+                            <div class="login-input-icon">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <rect x="5" y="10" width="14" height="11" rx="2"></rect>
+                                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                                </svg>
+                            </div>
+
+                            <input asp-for="Input.Password"
+                                   id="loginPassword"
+                                   type="password"
+                                   class="login-input"
+                                   autocomplete="current-password"
+                                   placeholder="Enter your password" />
+
+                            <button type="button"
+                                    id="passwordToggle"
+                                    class="password-toggle"
+                                    aria-label="Show password">
+                                <svg width="21"
+                                     height="21"
+                                     viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8">
+                                    <path d="M3 3l18 18"></path>
+                                    <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"></path>
+                                    <path d="M9.9 4.2A10.8 10.8 0 0 1 12 4c5.5 0 9 5 9 5a15 15 0 0 1-2.2 2.8"></path>
+                                    <path d="M6.6 6.6C4.3 8 3 10 3 10s3.5 5 9 5a9.8 9.8 0 0 0 4-.8"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <span asp-validation-for="Input.Password"
+                              class="login-error">
+                        </span>
+                    </div>
+
+                    <div class="login-options">
+                        <label class="remember-label">
+                            <input asp-for="Input.RememberMe" />
+                            <span>Remember me</span>
+                        </label>
+
+                        <a asp-page="./ForgotPassword"
+                               class="forgot-link">
+                            Forgot password?
+                        </a>
+                    </div>
+
+                    <button type="submit"
+                            class="login-submit">
+                        <span>Sign in</span>
+
+                        <svg width="19"
+                             height="19"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2">
+                            <path d="M5 12h14"></path>
+                            <path d="m14 5 7 7-7 7"></path>
+                        </svg>
+                    </button>
+
+                    <div class="login-register">
+                        Don't have an account?
+
+                        <a asp-page="./Register">
+                            Create account
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const password = document.getElementById("loginPassword");
+            const toggle = document.getElementById("passwordToggle");
+
+            if (!password || !toggle) {
+                return;
+            }
+
+            toggle.addEventListener("click", function () {
+                const hidden = password.type === "password";
+
+                password.type = hidden ? "text" : "password";
+
+                toggle.setAttribute(
+                    "aria-label",
+                    hidden ? "Hide password" : "Show password"
+                );
+            });
+        });
+    </script>
+}

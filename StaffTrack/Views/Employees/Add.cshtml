@@ -1,40 +1,862 @@
 ﻿@model StaffTrack.Models.ViewModels.AddEmployeeViewModel
+
 @{
+    ViewData["Title"] = "Add Employee";
 }
 
-<h1 class="mt-4 mb-2">Add Employee</h1>
-<form method="post" asp-action="Add" asp-controller="Employees">
-    <div asp-validation-summary="All" class="text-danger"></div> <!-- Validation messages container -->
+<style>
+    .add-page {
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px 30px;
+        overflow: hidden;
+        color: #10183f;
+        background: radial-gradient( circle at 76% 8%, rgba(117, 108, 255, .12), transparent 25% ), radial-gradient( circle at 15% 88%, rgba(89, 155, 255, .07), transparent 22% ), linear-gradient( 135deg, #ffffff 0%, #fbfcff 55%, #f7f9ff 100% );
+    }
 
-    <div class="mb-3">
-        <label for="Name" class="form-label">Name</label>
-        <input type="text" class="form-control" asp-for="Name">
-        <span asp-validation-for="Name" class="text-danger"></span> <!-- Individual validation message -->
+    .add-decoration {
+        position: absolute;
+        top: 20px;
+        right: -80px;
+        width: 620px;
+        height: 230px;
+        pointer-events: none;
+        opacity: .62;
+    }
+
+        .add-decoration::before {
+            content: "";
+            position: absolute;
+            width: 410px;
+            height: 125px;
+            top: 10px;
+            left: 20px;
+            border-radius: 50%;
+            transform: rotate(-22deg);
+            background: linear-gradient( 110deg, rgba(111, 164, 255, .10), rgba(119, 99, 255, .38), rgba(166, 123, 255, .33) );
+        }
+
+        .add-decoration::after {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 115px;
+            top: 80px;
+            right: 10px;
+            border-radius: 50%;
+            transform: rotate(18deg);
+            background: linear-gradient( 110deg, rgba(91, 160, 255, .10), rgba(87, 120, 255, .22), rgba(140, 113, 255, .08) );
+        }
+
+    .add-container {
+        width: 100%;
+        max-width: 1020px;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* ==============================
+           PAGE TITLE
+        ============================== */
+
+    .add-page-header {
+        margin-bottom: 17px;
+    }
+
+    .add-breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 8px;
+        color: #7887b1;
+        font-size: 12px;
+    }
+
+        .add-breadcrumb a {
+            color: #7887b1;
+            text-decoration: none;
+        }
+
+            .add-breadcrumb a:hover {
+                color: #2865fa;
+            }
+
+    .add-breadcrumb-current {
+        color: #293961;
+        font-weight: 500;
+    }
+
+    .add-title {
+        margin: 0;
+        color: #0b1745;
+        font-size: 39px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: -1.8px;
+    }
+
+    .add-subtitle {
+        margin: 8px 0 0;
+        color: #6779a9;
+        font-size: 14px;
+    }
+
+    /* ==============================
+           CARD
+        ============================== */
+
+    .add-card {
+        width: 100%;
+        border: 1px solid #e4e9f5;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, .94);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 22px 60px rgba(53, 71, 126, .10);
+        overflow: hidden;
+    }
+
+    .add-card-inner {
+        padding: 26px 30px 27px;
+    }
+
+    /* ==============================
+           CARD HEADER
+        ============================== */
+
+    .form-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding-bottom: 19px;
+        margin-bottom: 21px;
+        border-bottom: 1px solid #edf0f7;
+    }
+
+    .form-header-icon {
+        width: 52px;
+        height: 52px;
+        flex: 0 0 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        color: #1768ff;
+        background: linear-gradient( 145deg, #edf4ff, #dfe9ff );
+    }
+
+    .form-header-text h2 {
+        margin: 0 0 3px;
+        color: #10183f;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .form-header-text p {
+        margin: 0;
+        color: #7080aa;
+        font-size: 13px;
+    }
+
+    /* ==============================
+           FORM GRID
+        ============================== */
+
+    .employee-form {
+        width: 100%;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 22px;
+        row-gap: 18px;
+    }
+
+    .field-group {
+        width: 100%;
+    }
+
+        .field-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+    .field-label {
+        display: block;
+        margin-bottom: 7px;
+        color: #162044;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .field-control {
+        width: 100%;
+        height: 48px;
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+        border: 1px solid #dce4f3;
+        border-radius: 10px;
+        background: #ffffff;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+        .field-control:focus-within {
+            border-color: #78a1ff;
+            box-shadow: 0 0 0 3px rgba(57, 106, 255, .08);
+        }
+
+    .field-icon {
+        width: 50px;
+        flex: 0 0 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1768ff;
+        background: linear-gradient( 135deg, #f1f6ff, #e9f0ff );
+    }
+
+    .field-input {
+        width: 100%;
+        height: 100%;
+        padding: 0 14px;
+        border: 0;
+        outline: 0;
+        color: #29375d;
+        background: #ffffff;
+        font-size: 13px;
+    }
+
+        .field-input::placeholder {
+            color: #95a1bd;
+        }
+
+    input[type="date"].field-input {
+        color: #526486;
+    }
+
+    .field-validation {
+        display: block;
+        margin-top: 4px;
+        color: #d73550;
+        font-size: 10px;
+    }
+
+        .field-validation:empty {
+            display: none;
+        }
+
+    /* ==============================
+           VALIDATION SUMMARY
+        ============================== */
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .validation-summary-errors {
+        margin: 0 0 17px;
+        padding: 10px 13px;
+        border: 1px solid #ffd4dc;
+        border-radius: 9px;
+        color: #c72a46;
+        background: #fff6f8;
+        font-size: 11px;
+    }
+
+        .validation-summary-errors ul {
+            margin: 0;
+            padding-left: 17px;
+        }
+
+    /* ==============================
+           ACTIONS
+        ============================== */
+
+    .form-actions {
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid #e9edf6;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 11px;
+    }
+
+    .cancel-btn {
+        height: 43px;
+        min-width: 105px;
+        padding: 0 20px;
+        border: 1px solid #ccd7ea;
+        border-radius: 9px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #415989;
+        background: #ffffff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background .2s ease, border-color .2s ease;
+    }
+
+        .cancel-btn:hover {
+            color: #294676;
+            background: #f8faff;
+            border-color: #b8c5df;
+        }
+
+    .submit-btn {
+        height: 43px;
+        min-width: 155px;
+        padding: 0 20px;
+        border: 0;
+        border-radius: 9px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #ffffff;
+        background: linear-gradient( 100deg, #2580ff 0%, #1767ff 55%, #3e53f7 100% );
+        box-shadow: 0 9px 21px rgba(34, 104, 255, .21);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 26px rgba(34, 104, 255, .27);
+        }
+
+    /* ==============================
+           SHORT SCREENS
+        ============================== */
+
+    @@media (max-height: 760px) and (min-width: 701px) {
+
+        .add-page {
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .add-page-header {
+            margin-bottom: 11px;
+        }
+
+        .add-breadcrumb {
+            margin-bottom: 5px;
+        }
+
+        .add-title {
+            font-size: 34px;
+        }
+
+        .add-subtitle {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .add-card-inner {
+            padding: 19px 26px 20px;
+        }
+
+        .form-header {
+            padding-bottom: 13px;
+            margin-bottom: 14px;
+        }
+
+        .form-header-icon {
+            width: 44px;
+            height: 44px;
+            flex-basis: 44px;
+        }
+
+        .form-header-text h2 {
+            font-size: 16px;
+        }
+
+        .form-header-text p {
+            font-size: 11px;
+        }
+
+        .form-grid {
+            row-gap: 11px;
+        }
+
+        .field-label {
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .field-control {
+            height: 41px;
+        }
+
+        .form-actions {
+            margin-top: 15px;
+            padding-top: 14px;
+        }
+
+        .submit-btn,
+        .cancel-btn {
+            height: 39px;
+        }
+    }
+
+    /* ==============================
+           TABLET
+        ============================== */
+
+    @@media (max-width: 800px) {
+
+        .add-page {
+            align-items: flex-start;
+            padding: 24px 20px;
+            overflow-y: auto;
+        }
+
+        .add-decoration {
+            opacity: .32;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .field-group.full-width {
+            grid-column: auto;
+        }
+    }
+
+    /* ==============================
+           MOBILE
+        ============================== */
+
+    @@media (max-width: 600px) {
+
+        .add-page {
+            padding: 20px 15px;
+        }
+
+        .add-decoration {
+            display: none;
+        }
+
+        .add-title {
+            font-size: 33px;
+        }
+
+        .add-card-inner {
+            padding: 20px 16px;
+        }
+
+        .form-header {
+            align-items: flex-start;
+        }
+
+        .form-header-icon {
+            width: 46px;
+            height: 46px;
+            flex-basis: 46px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .submit-btn,
+        .cancel-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<section class="add-page">
+
+    <div class="add-decoration"></div>
+
+    <div class="add-container">
+
+        <div class="add-page-header">
+
+            <div class="add-breadcrumb">
+
+                <a asp-controller="Employees"
+                       asp-action="Index">
+                    Employees
+                </a>
+
+                <svg width="11"
+                     height="11"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <path d="m9 18 6-6-6-6"></path>
+
+                </svg>
+
+                <span class="add-breadcrumb-current">
+                    Add Employee
+                </span>
+
+            </div>
+
+            <h1 class="add-title">
+                Add Employee
+            </h1>
+
+            <p class="add-subtitle">
+                Fill in the information below to add a new employee to the system.
+            </p>
+
+        </div>
+
+        <div class="add-card">
+
+            <div class="add-card-inner">
+
+                <div class="form-header">
+
+                    <div class="form-header-icon">
+
+                        <svg width="24"
+                             height="24"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+
+                            <circle cx="12"
+                                    cy="7"
+                                    r="4">
+                            </circle>
+
+                            <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path>
+
+                        </svg>
+
+                    </div>
+
+                    <div class="form-header-text">
+
+                        <h2>
+                            Employee Information
+                        </h2>
+
+                        <p>
+                            Enter the employee details to create a new record.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <form asp-controller="Employees"
+                      asp-action="Add"
+                      method="post"
+                      class="employee-form">
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="validation-summary-errors">
+                    </div>
+
+                    <div class="form-grid">
+
+                        <!-- NAME -->
+
+                        <div class="field-group">
+
+                            <label asp-for="Name"
+                                   class="field-label">
+                                Name
+                            </label>
+
+                            <div class="field-control">
+
+                                <div class="field-icon">
+
+                                    <svg width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.9">
+
+                                        <circle cx="12"
+                                                cy="7"
+                                                r="4">
+                                        </circle>
+
+                                        <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path>
+
+                                    </svg>
+
+                                </div>
+
+                                <input asp-for="Name"
+                                       class="field-input"
+                                       placeholder="Enter full name" />
+
+                            </div>
+
+                            <span asp-validation-for="Name"
+                                  class="field-validation">
+                            </span>
+
+                        </div>
+
+                        <!-- EMAIL -->
+
+                        <div class="field-group">
+
+                            <label asp-for="Email"
+                                   class="field-label">
+                                Email Address
+                            </label>
+
+                            <div class="field-control">
+
+                                <div class="field-icon">
+
+                                    <svg width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.9">
+
+                                        <rect x="3"
+                                              y="5"
+                                              width="18"
+                                              height="14"
+                                              rx="2">
+                                        </rect>
+
+                                        <path d="m3 7 9 6 9-6"></path>
+
+                                    </svg>
+
+                                </div>
+
+                                <input asp-for="Email"
+                                       type="email"
+                                       class="field-input"
+                                       placeholder="Enter email address" />
+
+                            </div>
+
+                            <span asp-validation-for="Email"
+                                  class="field-validation">
+                            </span>
+
+                        </div>
+
+                        <!-- SALARY -->
+
+                        <div class="field-group">
+
+                            <label asp-for="Salary"
+                                   class="field-label">
+                                Salary
+                            </label>
+
+                            <div class="field-control">
+
+                                <div class="field-icon">
+
+                                    <svg width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8">
+
+                                        <ellipse cx="9"
+                                                 cy="6"
+                                                 rx="5"
+                                                 ry="2">
+                                        </ellipse>
+
+                                        <path d="M4 6v4c0 1.1 2.2 2 5 2"></path>
+
+                                        <ellipse cx="15"
+                                                 cy="14"
+                                                 rx="5"
+                                                 ry="2">
+                                        </ellipse>
+
+                                        <path d="M10 14v4c0 1.1 2.2 2 5 2s5-.9 5-2v-4"></path>
+
+                                    </svg>
+
+                                </div>
+
+                                <input asp-for="Salary"
+                                       type="number"
+                                       min="1"
+                                       class="field-input"
+                                       placeholder="Enter salary" />
+
+                            </div>
+
+                            <span asp-validation-for="Salary"
+                                  class="field-validation">
+                            </span>
+
+                        </div>
+
+                        <!-- DATE OF BIRTH -->
+
+                        <div class="field-group">
+
+                            <label asp-for="DateOfBirth"
+                                   class="field-label">
+                                Date of Birth
+                            </label>
+
+                            <div class="field-control">
+
+                                <div class="field-icon">
+
+                                    <svg width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8">
+
+                                        <rect x="3"
+                                              y="5"
+                                              width="18"
+                                              height="16"
+                                              rx="2">
+                                        </rect>
+
+                                        <path d="M16 3v4"></path>
+                                        <path d="M8 3v4"></path>
+                                        <path d="M3 10h18"></path>
+
+                                    </svg>
+
+                                </div>
+
+                                <input asp-for="DateOfBirth"
+                                       type="date"
+                                       class="field-input" />
+
+                            </div>
+
+                            <span asp-validation-for="DateOfBirth"
+                                  class="field-validation">
+                            </span>
+
+                        </div>
+
+                        <!-- DEPARTMENT -->
+
+                        <div class="field-group full-width">
+
+                            <label asp-for="Department"
+                                   class="field-label">
+                                Department
+                            </label>
+
+                            <div class="field-control">
+
+                                <div class="field-icon">
+
+                                    <svg width="18"
+                                         height="18"
+                                         viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8">
+
+                                        <path d="M4 21V4h11v17"></path>
+                                        <path d="M15 9h5v12"></path>
+                                        <path d="M8 8h2"></path>
+                                        <path d="M8 12h2"></path>
+                                        <path d="M8 16h2"></path>
+                                        <path d="M3 21h18"></path>
+
+                                    </svg>
+
+                                </div>
+
+                                <input asp-for="Department"
+                                       class="field-input"
+                                       placeholder="Enter department"
+                                       list="departmentOptions" />
+
+                                <datalist id="departmentOptions">
+
+                                    <option value="IT"></option>
+                                    <option value="Human Resources"></option>
+                                    <option value="Finance"></option>
+                                    <option value="Marketing"></option>
+                                    <option value="Sales"></option>
+                                    <option value="Operations"></option>
+
+                                </datalist>
+
+                            </div>
+
+                            <span asp-validation-for="Department"
+                                  class="field-validation">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+
+                        <a asp-controller="Employees"
+                               asp-action="Index"
+                               class="cancel-btn">
+                            Cancel
+                        </a>
+
+                        <button type="submit"
+                                class="submit-btn">
+
+                            <svg width="16"
+                                 height="16"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+
+                                <path d="M12 5v14"></path>
+                                <path d="M5 12h14"></path>
+
+                            </svg>
+
+                            Add Employee
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="mb-3">
-        <label for="Email" class="form-label">Email Address</label>
-        <input type="email" class="form-control" asp-for="Email">
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+</section>
 
-    <div class="mb-3">
-        <label for="Salary" class="form-label">Salary</label>
-        <input type="number" class="form-control" asp-for="Salary">
-        <span asp-validation-for="Salary" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label for="DateOfBirth" class="form-label">Date of Birth</label>
-        <input type="date" class="form-control" asp-for="DateOfBirth">
-        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label for="Department" class="form-label">Department</label>
-        <input type="text" class="form-control" asp-for="Department">
-        <span asp-validation-for="Department" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

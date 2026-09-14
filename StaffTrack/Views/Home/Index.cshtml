@@ -1,13 +1,826 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="container-fluid d-flex flex-column justify-content-center align-items-center" style="height: calc(100vh - 60px);">
+<style>
+    .stafftrack-home {
+        width: 100%;
+        flex: 1;
+        display: flex;
+        align-items: stretch;
+        background: radial-gradient(circle at 82% 34%, rgba(119, 90, 255, 0.10), transparent 24%), radial-gradient(circle at 67% 30%, rgba(44, 139, 255, 0.07), transparent 22%), linear-gradient(135deg, #ffffff 0%, #fbfcff 55%, #f8f7ff 100%);
+        color: #0a143d;
+        overflow: hidden;
+    }
 
-    <h1 class="display-4 text-center mb-4">Welcome</h1>
-    <p class="lead text-center mb-4">The Employee Tracking System is a modern software solution designed to help you manage your employees more efficiently.</p>
-    <div class="d-flex justify-content-center">
-        <a asp-controller="Employees" asp-action="Index" class="btn btn-primary btn-lg m-3 shadow-lg hover-shadow">Employees</a>
-        <a asp-controller="Employees" asp-action="Add" class="btn btn-success btn-lg m-3 shadow-lg hover-shadow">Add New Employee</a>
+    .home-content {
+        width: 100%;
+        max-width: 1380px;
+        margin: 0 auto;
+        padding: 26px 42px 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .home-hero {
+        display: grid;
+        grid-template-columns: 0.92fr 1.08fr;
+        align-items: center;
+        gap: 48px;
+        flex: 1;
+    }
+
+    .hero-copy {
+        max-width: 590px;
+    }
+
+    .hero-kicker {
+        margin-bottom: 14px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 4px;
+        color: #7e8aae;
+        text-transform: uppercase;
+    }
+
+    .hero-title {
+        margin: 0;
+        font-size: clamp(46px, 4.7vw, 68px);
+        line-height: 0.98;
+        font-weight: 800;
+        letter-spacing: -3px;
+        color: #07113e;
+    }
+
+    .hero-title-gradient {
+        display: block;
+        padding-bottom: 6px;
+        background: linear-gradient( 90deg, #1676ff 0%, #5753ff 48%, #912cff 100% );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .hero-description {
+        max-width: 540px;
+        margin: 18px 0 0;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #657195;
+    }
+
+    .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 24px;
+    }
+
+    .hero-button {
+        min-width: 200px;
+        height: 52px;
+        padding: 0 21px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+        .hero-button:hover {
+            transform: translateY(-2px);
+        }
+
+    .hero-button-primary {
+        color: #fff;
+        background: linear-gradient( 100deg, #176fff 0%, #4645ff 55%, #6c3cff 100% );
+        box-shadow: 0 10px 24px rgba(62, 75, 255, 0.20);
+    }
+
+        .hero-button-primary:hover {
+            color: #fff;
+        }
+
+    .hero-button-success {
+        color: #fff;
+        background: linear-gradient( 100deg, #15bc73 0%, #00a96b 100% );
+        box-shadow: 0 10px 24px rgba(0, 171, 106, 0.16);
+    }
+
+        .hero-button-success:hover {
+            color: #fff;
+        }
+
+    .hero-button-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-visual {
+        position: relative;
+        min-height: 340px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .visual-blob {
+        position: absolute;
+        width: 390px;
+        height: 300px;
+        border-radius: 44% 56% 58% 42% / 48% 39% 61% 52%;
+        background: linear-gradient( 145deg, rgba(43, 107, 255, .75) 0%, rgba(91, 89, 255, .50) 38%, rgba(175, 83, 255, .22) 72%, rgba(255, 183, 241, .12) 100% );
+        transform: rotate(-8deg);
+        opacity: .67;
+    }
+
+        .visual-blob::after {
+            content: "";
+            position: absolute;
+            width: 285px;
+            height: 220px;
+            left: -62px;
+            bottom: -48px;
+            border-radius: 45% 55% 42% 58%;
+            background: linear-gradient( 140deg, rgba(102, 144, 255, .14), rgba(123, 78, 255, .18), rgba(218, 130, 255, .12) );
+        }
+
+    .dots-pattern {
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        top: 6px;
+        left: 115px;
+        opacity: .42;
+        background-image: radial-gradient(#aab7ea 1.4px, transparent 1.4px);
+        background-size: 14px 14px;
+    }
+
+    .employee-card {
+        width: 270px;
+        padding: 15px;
+        position: relative;
+        z-index: 4;
+        border: 1px solid rgba(222, 228, 247, .9);
+        border-radius: 17px;
+        background: rgba(255, 255, 255, .90);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 18px 42px rgba(41, 54, 117, .13);
+        transform: rotate(2deg);
+    }
+
+    .employee-card-topline {
+        height: 8px;
+        width: 72px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        background: #eff2fb;
+    }
+
+    .mini-employee {
+        display: grid;
+        grid-template-columns: 38px 1fr 8px;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 2px;
+        border-bottom: 1px solid #edf0f7;
+    }
+
+        .mini-employee:last-child {
+            border-bottom: 0;
+        }
+
+    .employee-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 600;
+        background: linear-gradient(145deg, #285fd5, #7439b5);
+    }
+
+    .mini-employee:nth-child(3) .employee-avatar {
+        background: linear-gradient(145deg, #53398e, #9b42c6);
+    }
+
+    .mini-employee:nth-child(4) .employee-avatar {
+        background: linear-gradient(145deg, #6243a2, #a247c3);
+    }
+
+    .mini-employee:nth-child(5) .employee-avatar {
+        background: linear-gradient(145deg, #544087, #8056b6);
+    }
+
+    .employee-name {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: #17214a;
+    }
+
+    .employee-role {
+        margin: 2px 0 0;
+        font-size: 9px;
+        color: #707a9d;
+    }
+
+    .employee-online {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #16bd7a;
+    }
+
+    .stat-floating {
+        position: absolute;
+        z-index: 5;
+        top: 50px;
+        right: 25px;
+        width: 160px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, .92);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 16px 38px rgba(56, 70, 143, .12);
+        transform: rotate(-4deg);
+    }
+
+    .stat-floating-number {
+        font-size: 26px;
+        font-weight: 800;
+        color: #111a43;
+        line-height: 1;
+    }
+
+    .stat-floating-label {
+        margin-top: 3px;
+        color: #64709b;
+        font-size: 11px;
+    }
+
+    .stat-floating-growth {
+        margin-top: 7px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #14b96e;
+    }
+
+    .stat-floating-caption {
+        color: #8390b4;
+        font-size: 9px;
+    }
+
+    .quote-floating {
+        position: absolute;
+        z-index: 5;
+        bottom: 24px;
+        right: 14px;
+        width: 195px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, .91);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 16px 36px rgba(44, 55, 115, .11);
+    }
+
+    .quote-icon {
+        flex: 0 0 36px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #1f67ff;
+        background: #edf3ff;
+    }
+
+    .quote-text {
+        margin: 0;
+        color: #59658b;
+        line-height: 1.3;
+        font-size: 10px;
+    }
+
+    .handwritten-text {
+        position: absolute;
+        right: -35px;
+        top: 14px;
+        z-index: 4;
+        max-width: 100px;
+        color: #61709c;
+        font-size: 15px;
+        font-family: "Segoe Print", "Bradley Hand", cursive;
+        line-height: 1.15;
+        transform: rotate(-8deg);
+        text-align: center;
+    }
+
+    .home-stats {
+        margin-top: 8px;
+        padding: 18px 20px 2px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-top: 1px solid #e7ebf6;
+    }
+
+    .home-stat {
+        min-height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 13px;
+        position: relative;
+    }
+
+        .home-stat:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            width: 1px;
+            height: 48px;
+            background: #e3e7f2;
+        }
+
+    .home-stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #eaf3ff, #ede5ff);
+        color: #2769ff;
+    }
+
+    .home-stat:nth-child(2) .home-stat-icon {
+        color: #7531f0;
+    }
+
+    .home-stat:nth-child(3) .home-stat-icon {
+        color: #7e2bee;
+    }
+
+    .home-stat-number {
+        margin: 0;
+        color: #101842;
+        font-size: 27px;
+        line-height: 1;
+        font-weight: 800;
+    }
+
+    .home-stat-label {
+        margin: 3px 0 0;
+        color: #606c90;
+        font-size: 12px;
+    }
+
+    @@media (max-width: 1200px) {
+
+        .home-content {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+
+        .home-hero {
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+
+        .hero-title {
+            font-size: 56px;
+        }
+
+        .visual-blob {
+            width: 350px;
+            height: 280px;
+        }
+
+        .handwritten-text {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 991px) {
+
+        .stafftrack-home {
+            overflow: visible;
+        }
+
+        .home-content {
+            padding: 35px 28px;
+        }
+
+        .home-hero {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .hero-copy {
+            max-width: 700px;
+        }
+
+        .hero-visual {
+            min-height: 360px;
+        }
+
+        .home-stats {
+            margin-top: 20px;
+        }
+    }
+
+    @@media (max-width: 700px) {
+
+        .home-content {
+            padding: 28px 20px;
+        }
+
+        .hero-title {
+            font-size: 44px;
+            letter-spacing: -2px;
+        }
+
+        .hero-description {
+            font-size: 15px;
+        }
+
+        .hero-actions {
+            flex-direction: column;
+        }
+
+        .hero-button {
+            width: 100%;
+        }
+
+        .employee-card {
+            width: 250px;
+        }
+
+        .stat-floating {
+            width: 145px;
+            right: -5px;
+        }
+
+        .quote-floating {
+            display: none;
+        }
+
+        .home-stats {
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .home-stat {
+            justify-content: flex-start;
+        }
+
+            .home-stat:not(:last-child)::after {
+                display: none;
+            }
+    }
+</style>
+
+<section class="stafftrack-home">
+    <div class="home-content">
+
+        <div class="home-hero">
+
+            <div class="hero-copy">
+
+                <div class="hero-kicker">
+                    PEOPLE · ORGANIZATION · PROGRESS
+                </div>
+
+                <h1 class="hero-title">
+                    Welcome to
+                    <span class="hero-title-gradient">
+                        StaffTrack
+                    </span>
+                </h1>
+
+                <p class="hero-description">
+                    A modern software solution designed to help you manage your
+                    employees more efficiently.
+                </p>
+
+                <div class="hero-actions">
+
+                    <a asp-controller="Employees"
+                           asp-action="Index"
+                           class="hero-button hero-button-primary">
+
+                        <span class="hero-button-icon">
+                            <svg width="19"
+                                 height="19"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+
+                            </svg>
+                        </span>
+
+                        View Employees
+
+                        <span>→</span>
+
+                    </a>
+
+                    <a asp-controller="Employees"
+                           asp-action="Add"
+                           class="hero-button hero-button-success">
+
+                        <span style="font-size:24px; font-weight:300;">
+                            +
+                        </span>
+
+                        Add New Employee
+
+                        <span>→</span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="hero-visual">
+
+                <div class="visual-blob"></div>
+                <div class="dots-pattern"></div>
+
+                <div class="employee-card">
+
+                    <div class="employee-card-topline"></div>
+
+                    <div class="mini-employee">
+
+                        <div class="employee-avatar">
+                            EC
+                        </div>
+
+                        <div>
+                            <p class="employee-name">
+                                Emily Carter
+                            </p>
+
+                            <p class="employee-role">
+                                Marketing Specialist
+                            </p>
+                        </div>
+
+                        <span class="employee-online"></span>
+
+                    </div>
+
+                    <div class="mini-employee">
+
+                        <div class="employee-avatar">
+                            JW
+                        </div>
+
+                        <div>
+                            <p class="employee-name">
+                                James Wilson
+                            </p>
+
+                            <p class="employee-role">
+                                Software Engineer
+                            </p>
+                        </div>
+
+                        <span class="employee-online"></span>
+
+                    </div>
+
+                    <div class="mini-employee">
+
+                        <div class="employee-avatar">
+                            SL
+                        </div>
+
+                        <div>
+                            <p class="employee-name">
+                                Sophia Lee
+                            </p>
+
+                            <p class="employee-role">
+                                HR Manager
+                            </p>
+                        </div>
+
+                        <span class="employee-online"
+                              style="background:#5cb2ae;">
+                        </span>
+
+                    </div>
+
+                    <div class="mini-employee">
+
+                        <div class="employee-avatar">
+                            DK
+                        </div>
+
+                        <div>
+                            <p class="employee-name">
+                                Daniel Kim
+                            </p>
+
+                            <p class="employee-role">
+                                Finance Specialist
+                            </p>
+                        </div>
+
+                        <span class="employee-online"
+                              style="background:#a9b3cf;">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-floating">
+
+                    <div class="stat-floating-number">
+                        24
+                    </div>
+
+                    <div class="stat-floating-label">
+                        Total Employees
+                    </div>
+
+                    <div class="stat-floating-growth">
+                        ↑ 12%
+                    </div>
+
+                    <div class="stat-floating-caption">
+                        from last month
+                    </div>
+
+                </div>
+
+                <div class="quote-floating">
+
+                    <div class="quote-icon">
+
+                        <svg width="19"
+                             height="19"
+                             viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="2">
+
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <path d="M20 8v6"></path>
+                            <path d="M23 11h-6"></path>
+
+                        </svg>
+
+                    </div>
+
+                    <p class="quote-text">
+                        A more organized workplace for a brighter tomorrow.
+                    </p>
+
+                </div>
+
+                <div class="handwritten-text">
+                    People<br />
+                    Build<br />
+                    Great<br />
+                    Teams
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="home-stats">
+
+            <div class="home-stat">
+
+                <div class="home-stat-icon">
+
+                    <svg width="24"
+                         height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2">
+
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+
+                    </svg>
+
+                </div>
+
+                <div>
+                    <p class="home-stat-number">
+                        24
+                    </p>
+
+                    <p class="home-stat-label">
+                        Total Employees
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="home-stat">
+
+                <div class="home-stat-icon">
+
+                    <svg width="24"
+                         height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2">
+
+                        <rect x="3"
+                              y="3"
+                              width="18"
+                              height="18"
+                              rx="2">
+                        </rect>
+
+                        <path d="M9 21V9h6v12"></path>
+                        <path d="M7 6h.01"></path>
+                        <path d="M17 6h.01"></path>
+
+                    </svg>
+
+                </div>
+
+                <div>
+                    <p class="home-stat-number">
+                        5
+                    </p>
+
+                    <p class="home-stat-label">
+                        Departments
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="home-stat">
+
+                <div class="home-stat-icon">
+
+                    <svg width="25"
+                         height="25"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2">
+
+                        <path d="M3 3v18h18"></path>
+                        <path d="M7 16v-5"></path>
+                        <path d="M12 16V8"></path>
+                        <path d="M17 16V4"></path>
+
+                    </svg>
+
+                </div>
+
+                <div>
+                    <p class="home-stat-number">
+                        100%
+                    </p>
+
+                    <p class="home-stat-label">
+                        More Organized
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-</div>
+</section>
