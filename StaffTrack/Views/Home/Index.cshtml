@@ -3,13 +3,22 @@
 }
 
 <style>
+    :root {
+        --home-white: #ffffff;
+        --home-text: #0a143d;
+        --home-title: #07113e;
+        --home-muted: #657195;
+        --home-primary: #176fff;
+        --home-success: #16bd7a;
+    }
+
     .stafftrack-home {
         width: 100%;
         flex: 1;
         display: flex;
         align-items: stretch;
-        background: radial-gradient(circle at 82% 34%, rgba(119, 90, 255, 0.10), transparent 24%), radial-gradient(circle at 67% 30%, rgba(44, 139, 255, 0.07), transparent 22%), linear-gradient(135deg, #ffffff 0%, #fbfcff 55%, #f8f7ff 100%);
-        color: #0a143d;
+        color: var(--home-text);
+        background: radial-gradient(circle at 82% 34%, rgba(119, 90, 255, .10), transparent 24%), radial-gradient(circle at 67% 30%, rgba(44, 139, 255, .07), transparent 22%), linear-gradient(135deg, #ffffff 0%, #fbfcff 55%, #f8f7ff 100%);
         overflow: hidden;
     }
 
@@ -24,11 +33,11 @@
     }
 
     .home-hero {
+        flex: 1;
         display: grid;
-        grid-template-columns: 0.92fr 1.08fr;
+        grid-template-columns: .92fr 1.08fr;
         align-items: center;
         gap: 48px;
-        flex: 1;
     }
 
     .hero-copy {
@@ -37,37 +46,37 @@
 
     .hero-kicker {
         margin-bottom: 14px;
+        color: #7e8aae;
         font-size: 11px;
         font-weight: 600;
         letter-spacing: 4px;
-        color: #7e8aae;
         text-transform: uppercase;
     }
 
     .hero-title {
         margin: 0;
+        color: var(--home-title);
         font-size: clamp(46px, 4.7vw, 68px);
-        line-height: 0.98;
+        line-height: .98;
         font-weight: 800;
         letter-spacing: -3px;
-        color: #07113e;
     }
 
     .hero-title-gradient {
         display: block;
         padding-bottom: 6px;
-        background: linear-gradient( 90deg, #1676ff 0%, #5753ff 48%, #912cff 100% );
+        color: transparent;
+        background: linear-gradient(90deg, #1676ff 0%, #5753ff 48%, #912cff 100%);
         -webkit-background-clip: text;
         background-clip: text;
-        color: transparent;
     }
 
     .hero-description {
         max-width: 540px;
         margin: 18px 0 0;
+        color: var(--home-muted);
         font-size: 16px;
         line-height: 1.5;
-        color: #657195;
     }
 
     .hero-actions {
@@ -86,6 +95,7 @@
         align-items: center;
         justify-content: center;
         gap: 11px;
+        color: var(--home-white);
         text-decoration: none;
         font-size: 14px;
         font-weight: 600;
@@ -93,28 +103,19 @@
     }
 
         .hero-button:hover {
+            color: var(--home-white);
             transform: translateY(-2px);
         }
 
     .hero-button-primary {
-        color: #fff;
-        background: linear-gradient( 100deg, #176fff 0%, #4645ff 55%, #6c3cff 100% );
-        box-shadow: 0 10px 24px rgba(62, 75, 255, 0.20);
+        background: linear-gradient(100deg, #176fff 0%, #4645ff 55%, #6c3cff 100%);
+        box-shadow: 0 10px 24px rgba(62, 75, 255, .20);
     }
-
-        .hero-button-primary:hover {
-            color: #fff;
-        }
 
     .hero-button-success {
-        color: #fff;
-        background: linear-gradient( 100deg, #15bc73 0%, #00a96b 100% );
-        box-shadow: 0 10px 24px rgba(0, 171, 106, 0.16);
+        background: linear-gradient(100deg, #15bc73 0%, #00a96b 100%);
+        box-shadow: 0 10px 24px rgba(0, 171, 106, .16);
     }
-
-        .hero-button-success:hover {
-            color: #fff;
-        }
 
     .hero-button-icon {
         display: inline-flex;
@@ -122,9 +123,14 @@
         justify-content: center;
     }
 
+    .hero-button-plus {
+        font-size: 24px;
+        font-weight: 300;
+    }
+
     .hero-visual {
-        position: relative;
         min-height: 340px;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -135,7 +141,7 @@
         width: 390px;
         height: 300px;
         border-radius: 44% 56% 58% 42% / 48% 39% 61% 52%;
-        background: linear-gradient( 145deg, rgba(43, 107, 255, .75) 0%, rgba(91, 89, 255, .50) 38%, rgba(175, 83, 255, .22) 72%, rgba(255, 183, 241, .12) 100% );
+        background: linear-gradient(145deg, rgba(43, 107, 255, .75) 0%, rgba(91, 89, 255, .50) 38%, rgba(175, 83, 255, .22) 72%, rgba(255, 183, 241, .12) 100%);
         transform: rotate(-8deg);
         opacity: .67;
     }
@@ -148,7 +154,7 @@
             left: -62px;
             bottom: -48px;
             border-radius: 45% 55% 42% 58%;
-            background: linear-gradient( 140deg, rgba(102, 144, 255, .14), rgba(123, 78, 255, .18), rgba(218, 130, 255, .12) );
+            background: linear-gradient(140deg, rgba(102, 144, 255, .14), rgba(123, 78, 255, .18), rgba(218, 130, 255, .12));
         }
 
     .dots-pattern {
@@ -176,19 +182,19 @@
     }
 
     .employee-card-topline {
-        height: 8px;
         width: 72px;
+        height: 8px;
         margin-bottom: 10px;
         border-radius: 10px;
         background: #eff2fb;
     }
 
     .mini-employee {
+        padding: 8px 2px;
         display: grid;
         grid-template-columns: 38px 1fr 8px;
         align-items: center;
         gap: 10px;
-        padding: 8px 2px;
         border-bottom: 1px solid #edf0f7;
     }
 
@@ -203,10 +209,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fff;
+        color: var(--home-white);
+        background: linear-gradient(145deg, #285fd5, #7439b5);
         font-size: 11px;
         font-weight: 600;
-        background: linear-gradient(145deg, #285fd5, #7439b5);
     }
 
     .mini-employee:nth-child(3) .employee-avatar {
@@ -223,31 +229,39 @@
 
     .employee-name {
         margin: 0;
+        color: #17214a;
         font-size: 12px;
         font-weight: 700;
-        color: #17214a;
     }
 
     .employee-role {
         margin: 2px 0 0;
-        font-size: 9px;
         color: #707a9d;
+        font-size: 9px;
     }
 
     .employee-online {
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background: #16bd7a;
+        background: var(--home-success);
+    }
+
+    .employee-online-away {
+        background: #5cb2ae;
+    }
+
+    .employee-online-offline {
+        background: #a9b3cf;
     }
 
     .stat-floating {
+        width: 160px;
+        padding: 16px 18px;
         position: absolute;
         z-index: 5;
         top: 50px;
         right: 25px;
-        width: 160px;
-        padding: 16px 18px;
         border-radius: 16px;
         background: rgba(255, 255, 255, .92);
         backdrop-filter: blur(14px);
@@ -256,10 +270,10 @@
     }
 
     .stat-floating-number {
-        font-size: 26px;
-        font-weight: 800;
         color: #111a43;
+        font-size: 26px;
         line-height: 1;
+        font-weight: 800;
     }
 
     .stat-floating-label {
@@ -270,9 +284,9 @@
 
     .stat-floating-growth {
         margin-top: 7px;
+        color: #14b96e;
         font-size: 14px;
         font-weight: 700;
-        color: #14b96e;
     }
 
     .stat-floating-caption {
@@ -281,12 +295,12 @@
     }
 
     .quote-floating {
-        position: absolute;
-        z-index: 5;
-        bottom: 24px;
-        right: 14px;
         width: 195px;
         padding: 14px 16px;
+        position: absolute;
+        z-index: 5;
+        right: 14px;
+        bottom: 24px;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -297,9 +311,9 @@
     }
 
     .quote-icon {
-        flex: 0 0 36px;
         width: 36px;
         height: 36px;
+        flex: 0 0 36px;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -311,22 +325,22 @@
     .quote-text {
         margin: 0;
         color: #59658b;
-        line-height: 1.3;
         font-size: 10px;
+        line-height: 1.3;
     }
 
     .handwritten-text {
-        position: absolute;
-        right: -35px;
-        top: 14px;
-        z-index: 4;
         max-width: 100px;
+        position: absolute;
+        z-index: 4;
+        top: 14px;
+        right: -35px;
         color: #61709c;
-        font-size: 15px;
         font-family: "Segoe Print", "Bradley Hand", cursive;
+        font-size: 15px;
         line-height: 1.15;
-        transform: rotate(-8deg);
         text-align: center;
+        transform: rotate(-8deg);
     }
 
     .home-stats {
@@ -339,11 +353,11 @@
 
     .home-stat {
         min-height: 62px;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 13px;
-        position: relative;
     }
 
         .home-stat:not(:last-child)::after {
@@ -362,8 +376,8 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(145deg, #eaf3ff, #ede5ff);
         color: #2769ff;
+        background: linear-gradient(145deg, #eaf3ff, #ede5ff);
     }
 
     .home-stat:nth-child(2) .home-stat-icon {
@@ -389,7 +403,6 @@
     }
 
     @@media (max-width: 1200px) {
-
         .home-content {
             padding-left: 30px;
             padding-right: 30px;
@@ -415,7 +428,6 @@
     }
 
     @@media (max-width: 991px) {
-
         .stafftrack-home {
             overflow: visible;
         }
@@ -443,7 +455,6 @@
     }
 
     @@media (max-width: 700px) {
-
         .home-content {
             padding: 28px 20px;
         }
@@ -497,11 +508,8 @@
 
 <section class="stafftrack-home">
     <div class="home-content">
-
         <div class="home-hero">
-
             <div class="hero-copy">
-
                 <div class="hero-kicker">
                     PEOPLE · ORGANIZATION · PROGRESS
                 </div>
@@ -519,7 +527,6 @@
                 </p>
 
                 <div class="hero-actions">
-
                     <a asp-controller="Employees"
                            asp-action="Index"
                            class="hero-button hero-button-primary">
@@ -531,50 +538,41 @@
                                  fill="none"
                                  stroke="currentColor"
                                  stroke-width="2">
-
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="9" cy="7" r="4"></circle>
                                 <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-
                             </svg>
                         </span>
 
                         View Employees
 
                         <span>→</span>
-
                     </a>
 
                     <a asp-controller="Employees"
                            asp-action="Add"
                            class="hero-button hero-button-success">
 
-                        <span style="font-size:24px; font-weight:300;">
+                        <span class="hero-button-plus">
                             +
                         </span>
 
                         Add New Employee
 
                         <span>→</span>
-
                     </a>
-
                 </div>
-
             </div>
 
             <div class="hero-visual">
-
                 <div class="visual-blob"></div>
                 <div class="dots-pattern"></div>
 
                 <div class="employee-card">
-
                     <div class="employee-card-topline"></div>
 
                     <div class="mini-employee">
-
                         <div class="employee-avatar">
                             EC
                         </div>
@@ -590,11 +588,9 @@
                         </div>
 
                         <span class="employee-online"></span>
-
                     </div>
 
                     <div class="mini-employee">
-
                         <div class="employee-avatar">
                             JW
                         </div>
@@ -610,11 +606,9 @@
                         </div>
 
                         <span class="employee-online"></span>
-
                     </div>
 
                     <div class="mini-employee">
-
                         <div class="employee-avatar">
                             SL
                         </div>
@@ -629,14 +623,10 @@
                             </p>
                         </div>
 
-                        <span class="employee-online"
-                              style="background:#5cb2ae;">
-                        </span>
-
+                        <span class="employee-online employee-online-away"></span>
                     </div>
 
                     <div class="mini-employee">
-
                         <div class="employee-avatar">
                             DK
                         </div>
@@ -651,16 +641,11 @@
                             </p>
                         </div>
 
-                        <span class="employee-online"
-                              style="background:#a9b3cf;">
-                        </span>
-
+                        <span class="employee-online employee-online-offline"></span>
                     </div>
-
                 </div>
 
                 <div class="stat-floating">
-
                     <div class="stat-floating-number">
                         24
                     </div>
@@ -676,33 +661,26 @@
                     <div class="stat-floating-caption">
                         from last month
                     </div>
-
                 </div>
 
                 <div class="quote-floating">
-
                     <div class="quote-icon">
-
                         <svg width="19"
                              height="19"
                              viewBox="0 0 24 24"
                              fill="none"
                              stroke="currentColor"
                              stroke-width="2">
-
                             <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                             <circle cx="8.5" cy="7" r="4"></circle>
                             <path d="M20 8v6"></path>
                             <path d="M23 11h-6"></path>
-
                         </svg>
-
                     </div>
 
                     <p class="quote-text">
                         A more organized workplace for a brighter tomorrow.
                     </p>
-
                 </div>
 
                 <div class="handwritten-text">
@@ -711,31 +689,23 @@
                     Great<br />
                     Teams
                 </div>
-
             </div>
-
         </div>
 
         <div class="home-stats">
-
             <div class="home-stat">
-
                 <div class="home-stat-icon">
-
                     <svg width="24"
                          height="24"
                          viewBox="0 0 24 24"
                          fill="none"
                          stroke="currentColor"
                          stroke-width="2">
-
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
                         <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
                         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-
                     </svg>
-
                 </div>
 
                 <div>
@@ -747,20 +717,16 @@
                         Total Employees
                     </p>
                 </div>
-
             </div>
 
             <div class="home-stat">
-
                 <div class="home-stat-icon">
-
                     <svg width="24"
                          height="24"
                          viewBox="0 0 24 24"
                          fill="none"
                          stroke="currentColor"
                          stroke-width="2">
-
                         <rect x="3"
                               y="3"
                               width="18"
@@ -771,9 +737,7 @@
                         <path d="M9 21V9h6v12"></path>
                         <path d="M7 6h.01"></path>
                         <path d="M17 6h.01"></path>
-
                     </svg>
-
                 </div>
 
                 <div>
@@ -785,27 +749,21 @@
                         Departments
                     </p>
                 </div>
-
             </div>
 
             <div class="home-stat">
-
                 <div class="home-stat-icon">
-
                     <svg width="25"
                          height="25"
                          viewBox="0 0 24 24"
                          fill="none"
                          stroke="currentColor"
                          stroke-width="2">
-
                         <path d="M3 3v18h18"></path>
                         <path d="M7 16v-5"></path>
                         <path d="M12 16V8"></path>
                         <path d="M17 16V4"></path>
-
                     </svg>
-
                 </div>
 
                 <div>
@@ -817,10 +775,7 @@
                         More Organized
                     </p>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 </section>

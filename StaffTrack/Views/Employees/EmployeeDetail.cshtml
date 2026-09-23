@@ -6,27 +6,32 @@
     var nameParts = (Model.Name ?? "")
         .Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-    var initials = "";
-
-    if (nameParts.Length > 0)
+    var initials = nameParts.Length switch
     {
-        initials += nameParts[0][0];
-    }
-
-    if (nameParts.Length > 1)
-    {
-        initials += nameParts[nameParts.Length - 1][0];
-    }
+        0 => "",
+        1 => nameParts[0][0].ToString(),
+        _ => $"{nameParts[0][0]}{nameParts[^1][0]}"
+    };
 }
 
 <style>
+    :root {
+        --detail-white: #ffffff;
+        --detail-text: #10183f;
+        --detail-title: #0a1440;
+        --detail-muted: #6678aa;
+        --detail-primary: #1768ff;
+        --detail-border: #e5eaf5;
+        --detail-row-border: #e9edf5;
+    }
+
     .detail-page {
         width: 100%;
         height: calc(100dvh - 123px);
         min-height: 0;
         position: relative;
         overflow: hidden;
-        color: #10183f;
+        color: var(--detail-text);
         background: radial-gradient( circle at 75% 5%, rgba(108, 95, 255, .10), transparent 25% ), linear-gradient( 135deg, #ffffff 0%, #fbfcff 56%, #f7f9ff 100% );
     }
 
@@ -40,26 +45,27 @@
         opacity: .55;
     }
 
-        .detail-decoration::before {
+        .detail-decoration::before,
+        .detail-decoration::after {
             content: "";
             position: absolute;
+            border-radius: 50%;
+        }
+
+        .detail-decoration::before {
             width: 360px;
             height: 100px;
             top: 2px;
             left: 50px;
-            border-radius: 50%;
             transform: rotate(-23deg);
             background: linear-gradient( 110deg, rgba(119, 163, 255, .08), rgba(119, 95, 255, .29), rgba(160, 121, 255, .22) );
         }
 
         .detail-decoration::after {
-            content: "";
-            position: absolute;
             width: 390px;
             height: 100px;
             top: 52px;
             right: 0;
-            border-radius: 50%;
             transform: rotate(18deg);
             background: linear-gradient( 110deg, rgba(92, 153, 255, .07), rgba(91, 118, 255, .17), rgba(141, 114, 255, .07) );
         }
@@ -77,10 +83,6 @@
         flex-direction: column;
         overflow: hidden;
     }
-
-    /* =========================
-           HEADER
-        ========================= */
 
     .detail-header {
         flex: 0 0 auto;
@@ -120,7 +122,7 @@
 
     .detail-title {
         margin: 0;
-        color: #0a1440;
+        color: var(--detail-title);
         font-size: 45px;
         line-height: 1;
         font-weight: 800;
@@ -129,7 +131,7 @@
 
     .detail-subtitle {
         margin: 8px 0 0;
-        color: #6678aa;
+        color: var(--detail-muted);
         font-size: 16px;
     }
 
@@ -157,10 +159,6 @@
             border-color: #9db8ff;
         }
 
-    /* =========================
-           CONTENT
-        ========================= */
-
     .detail-content {
         flex: 1;
         min-height: 0;
@@ -170,16 +168,12 @@
         overflow: hidden;
     }
 
-    /* =========================
-           PROFILE CARD
-        ========================= */
-
     .profile-card {
         height: 100%;
         min-height: 0;
         position: relative;
         overflow: hidden;
-        border: 1px solid #e5eaf5;
+        border: 1px solid var(--detail-border);
         border-radius: 18px;
         background: rgba(255, 255, 255, .94);
         box-shadow: 0 14px 34px rgba(52, 72, 129, .065);
@@ -221,7 +215,7 @@
         color: #6937f5;
         font-size: 38px;
         font-weight: 800;
-        background: linear-gradient( 145deg, #e2dcff, #f0e8ff );
+        background: linear-gradient(145deg, #e2dcff, #f0e8ff);
     }
 
     .profile-name {
@@ -269,8 +263,8 @@
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        color: #1768ff;
-        background: linear-gradient( 145deg, #f0f5ff, #e4edff );
+        color: var(--detail-primary);
+        background: linear-gradient(145deg, #f0f5ff, #e4edff);
     }
 
     .profile-detail-content {
@@ -293,15 +287,11 @@
         font-size: 12px;
     }
 
-    /* =========================
-           INFORMATION CARD
-        ========================= */
-
     .information-card {
         height: 100%;
         min-height: 0;
         padding: 20px;
-        border: 1px solid #e5eaf5;
+        border: 1px solid var(--detail-border);
         border-radius: 18px;
         background: rgba(255, 255, 255, .94);
         box-shadow: 0 14px 34px rgba(52, 72, 129, .065);
@@ -336,20 +326,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #1768ff;
-        background: linear-gradient( 145deg, #eef4ff, #e1ebff );
+        color: var(--detail-primary);
+        background: linear-gradient(145deg, #eef4ff, #e1ebff);
     }
 
     .information-title h2 {
         margin: 0;
-        color: #10183f;
+        color: var(--detail-text);
         font-size: 20px;
         font-weight: 700;
     }
-
-    /* =========================
-           INFO ROWS
-        ========================= */
 
     .information-list {
         width: 100%;
@@ -361,7 +347,7 @@
         grid-template-columns: 220px minmax(0, 1fr);
         align-items: center;
         gap: 26px;
-        border-bottom: 1px solid #e9edf5;
+        border-bottom: 1px solid var(--detail-row-border);
     }
 
         .information-row:last-child {
@@ -392,12 +378,7 @@
         font-weight: 600;
     }
 
-    /* =========================
-           SHORT DESKTOP
-        ========================= */
-
     @@media (max-height: 760px) and (min-width: 701px) {
-
         .detail-shell {
             padding-top: 9px;
             padding-bottom: 8px;
@@ -501,12 +482,7 @@
         }
     }
 
-    /* =========================
-           TABLET
-        ========================= */
-
     @@media (max-width: 900px) {
-
         .detail-page {
             height: auto;
             min-height: calc(100dvh - 119px);
@@ -558,12 +534,7 @@
         }
     }
 
-    /* =========================
-           MOBILE
-        ========================= */
-
     @@media (max-width: 600px) {
-
         .detail-shell {
             padding: 16px;
         }
@@ -622,17 +593,12 @@
 </style>
 
 <section class="detail-page">
-
     <div class="detail-decoration"></div>
 
     <div class="detail-shell">
-
         <div class="detail-header">
-
             <div class="detail-header-left">
-
                 <div class="detail-breadcrumb">
-
                     <a asp-controller="Employees"
                            asp-action="Index">
                         Employees
@@ -644,15 +610,12 @@
                          fill="none"
                          stroke="currentColor"
                          stroke-width="2">
-
                         <path d="m9 18 6-6-6-6"></path>
-
                     </svg>
 
                     <span class="detail-breadcrumb-current">
                         Employee Detail
                     </span>
-
                 </div>
 
                 <h1 class="detail-title">
@@ -662,45 +625,34 @@
                 <p class="detail-subtitle">
                     View detailed information about the employee.
                 </p>
-
             </div>
 
             <a asp-controller="Employees"
                    asp-action="Index"
                    class="back-list-btn">
-
                 <svg width="16"
                      height="16"
                      viewBox="0 0 24 24"
                      fill="none"
                      stroke="currentColor"
                      stroke-width="2">
-
                     <path d="M19 12H5"></path>
                     <path d="m12 19-7-7 7-7"></path>
-
                 </svg>
 
                 Back to Employees List
-
             </a>
-
         </div>
 
         <div class="detail-content">
-
             <aside class="profile-card">
-
                 <div class="profile-inner">
-
                     <div class="profile-main">
-
                         <div class="profile-avatar">
                             @initials.ToUpper()
                         </div>
 
                         <div>
-
                             <h2 class="profile-name">
                                 @Model.Name
                             </h2>
@@ -708,26 +660,20 @@
                             <span class="profile-department">
                                 @Model.Department
                             </span>
-
                         </div>
-
                     </div>
 
                     <div class="profile-divider"></div>
 
                     <div class="profile-details">
-
                         <div class="profile-detail">
-
                             <div class="profile-detail-icon">
-
                                 <svg width="18"
                                      height="18"
                                      viewBox="0 0 24 24"
                                      fill="none"
                                      stroke="currentColor"
                                      stroke-width="1.9">
-
                                     <rect x="3"
                                           y="5"
                                           width="18"
@@ -736,13 +682,10 @@
                                     </rect>
 
                                     <path d="m3 7 9 6 9-6"></path>
-
                                 </svg>
-
                             </div>
 
                             <div class="profile-detail-content">
-
                                 <div class="profile-detail-value">
                                     @Model.Email
                                 </div>
@@ -750,22 +693,17 @@
                                 <div class="profile-detail-label">
                                     Email
                                 </div>
-
                             </div>
-
                         </div>
 
                         <div class="profile-detail">
-
                             <div class="profile-detail-icon">
-
                                 <svg width="18"
                                      height="18"
                                      viewBox="0 0 24 24"
                                      fill="none"
                                      stroke="currentColor"
                                      stroke-width="1.8">
-
                                     <rect x="3"
                                           y="5"
                                           width="18"
@@ -776,13 +714,10 @@
                                     <path d="M16 3v4"></path>
                                     <path d="M8 3v4"></path>
                                     <path d="M3 10h18"></path>
-
                                 </svg>
-
                             </div>
 
                             <div class="profile-detail-content">
-
                                 <div class="profile-detail-value">
                                     @Model.DateOfBirth.ToString("dd-MM-yyyy")
                                 </div>
@@ -790,53 +725,38 @@
                                 <div class="profile-detail-label">
                                     Date of Birth
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </aside>
 
             <section class="information-card">
-
                 <div class="information-inner">
-
                     <div class="information-title">
-
                         <div class="information-title-icon">
-
                             <svg width="21"
                                  height="21"
                                  viewBox="0 0 24 24"
                                  fill="none"
                                  stroke="currentColor"
                                  stroke-width="1.9">
-
                                 <circle cx="12"
                                         cy="7"
                                         r="4">
                                 </circle>
 
                                 <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2"></path>
-
                             </svg>
-
                         </div>
 
                         <h2>
                             Personal & Work Information
                         </h2>
-
                     </div>
 
                     <div class="information-list">
-
                         <div class="information-row">
-
                             <div class="information-label">
                                 Name
                             </div>
@@ -844,11 +764,9 @@
                             <div class="information-value">
                                 @Model.Name
                             </div>
-
                         </div>
 
                         <div class="information-row">
-
                             <div class="information-label">
                                 Email
                             </div>
@@ -856,11 +774,9 @@
                             <div class="information-value">
                                 @Model.Email
                             </div>
-
                         </div>
 
                         <div class="information-row">
-
                             <div class="information-label">
                                 Salary
                             </div>
@@ -868,11 +784,9 @@
                             <div class="information-value">
                                 @Model.Salary.ToString("N0")
                             </div>
-
                         </div>
 
                         <div class="information-row">
-
                             <div class="information-label">
                                 Date of Birth
                             </div>
@@ -880,33 +794,22 @@
                             <div class="information-value">
                                 @Model.DateOfBirth.ToString("dd-MM-yyyy")
                             </div>
-
                         </div>
 
                         <div class="information-row">
-
                             <div class="information-label">
                                 Department
                             </div>
 
                             <div class="information-value">
-
                                 <span class="detail-department-badge">
                                     @Model.Department
                                 </span>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
-
         </div>
-
     </div>
-
 </section>
